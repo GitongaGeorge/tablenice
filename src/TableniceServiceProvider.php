@@ -4,22 +4,14 @@ namespace Mystamyst\Tablenice;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
 use Mystamyst\Tablenice\Console\Commands\MakeColumnCommand;
 use Mystamyst\Tablenice\Console\Commands\MakeDatatableCommand;
 use Mystamyst\Tablenice\Console\Commands\MakeFormCommand;
-use Livewire\Livewire;
 use Mystamyst\Tablenice\Forms\Components\Button as LivewireButtonComponent;
 use Mystamyst\Tablenice\Forms\Components\Modal as LivewireModalComponent;
 use Mystamyst\Tablenice\Forms\Components\Section as LivewireSectionComponent;
 use Mystamyst\Tablenice\Forms\Components\Wizard as LivewireWizardComponent;
-use Mystamyst\Tablenice\Forms\Fields\CheckboxField;
-use Mystamyst\Tablenice\Forms\Fields\DateField;
-use Mystamyst\Tablenice\Forms\Fields\DateTimeField;
-use Mystamyst\Tablenice\Forms\Fields\RadioField;
-use Mystamyst\Tablenice\Forms\Fields\RelationshipSelectField;
-use Mystamyst\Tablenice\Forms\Fields\SelectField;
-use Mystamyst\Tablenice\Forms\Fields\TextInput;
-use Mystamyst\Tablenice\Forms\Fields\TextareaField;
 
 class TableniceServiceProvider extends ServiceProvider
 {
@@ -38,16 +30,18 @@ class TableniceServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Load package views and tag them for publishing
         $this->loadViewsFrom(__DIR__.'/Views', 'tablenice');
 
         $this->publishes([
-            __DIR__.'/../config/tablenice.php' => \config_path('tablenice.php'),
+            __DIR__.'/../config/tablenice.php' => config_path('tablenice.php'),
         ], 'tablenice-config');
 
         $this->publishes([
-            __DIR__.'/Views' => \resource_path('views/vendor/tablenice'),
+            __DIR__.'/Views' => resource_path('views/vendor/tablenice'),
         ], 'tablenice-views');
 
+        // Register console commands
         if ($this->app->runningInConsole()) {
             $this->commands([
                 MakeColumnCommand::class,
@@ -56,10 +50,14 @@ class TableniceServiceProvider extends ServiceProvider
             ]);
         }
 
+        // Register Livewire and Blade components
         $this->registerLivewireComponents();
         $this->registerBladeComponents();
     }
 
+    /**
+     * Register the Livewire components.
+     */
     protected function registerLivewireComponents()
     {
         Livewire::component('tablenice::forms.modal', LivewireModalComponent::class);
@@ -68,28 +66,31 @@ class TableniceServiceProvider extends ServiceProvider
         Livewire::component('tablenice::forms.section', LivewireSectionComponent::class);
     }
 
+    /**
+     * Register the Blade components for <x-tag> syntax.
+     */
     protected function registerBladeComponents()
     {
-        // --- FIXED: Changed aliases from kebab-case to snake_case ---
+        // --- FIXED: Switched to Blade::component for <x-tag> syntax ---
+        // --- and used conventional kebab-case for aliases.         ---
 
         // Datatable components
-        \Blade::aliasComponent('tablenice::components.datatable.table', 'tablenice_table');
-        \Blade::aliasComponent('tablenice::components.datatable.header', 'tablenice_table_header');
-        \Blade::aliasComponent('tablenice::components.datatable.footer', 'tablenice_table_footer');
-        \Blade::aliasComponent('tablenice::components.datatable.filters', 'tablenice_table_filters');
-        \Blade::aliasComponent('tablenice::components.datatable.column-selector', 'tablenice_table_column_selector');
-        \Blade::aliasComponent('tablenice::components.datatable.pagination', 'tablenice_table_pagination');
-        \Blade::aliasComponent('tablenice::components.datatable.actions', 'tablenice_table_actions');
-        \Blade::aliasComponent('tablenice::components.datatable.tabs', 'tablenice_table_tabs');
+        Blade::component('tablenice::components.datatable.table', 'tablenice-table');
+        Blade::component('tablenice::components.datatable.header', 'tablenice-table-header');
+        Blade::component('tablenice::components.datatable.footer', 'tablenice-table-footer');
+        Blade::component('tablenice::components.datatable.filters', 'tablenice-table-filters');
+        Blade::component('tablenice::components.datatable.column-selector', 'tablenice-table-column-selector');
+        Blade::component('tablenice::components.datatable.pagination', 'tablenice-table-pagination');
+        Blade::component('tablenice::components.datatable.actions', 'tablenice-table-actions');
+        Blade::component('tablenice::components.datatable.tabs', 'tablenice-table-tabs');
 
-
-        // Form fields (as Blade components for easier rendering)
-        \Blade::aliasComponent('tablenice::forms.text-input', 'tablenice_text_input');
-        \Blade::aliasComponent('tablenice::forms.select-field', 'tablenice_select_field');
-        \Blade::aliasComponent('tablenice::forms.checkbox-field', 'tablenice_checkbox_field');
-        \Blade::aliasComponent('tablenice::forms.date-field', 'tablenice_date_field');
-        \Blade::aliasComponent('tablenice::forms.datetime-field', 'tablenice_datetime_field');
-        \Blade::aliasComponent('tablenice::forms.radio-field', 'tablenice_radio_field');
-        \Blade::aliasComponent('tablenice::forms.textarea-field', 'tablenice_textarea_field');
+        // Form field components
+        Blade::component('tablenice::forms.text-input', 'tablenice-text-input');
+        Blade::component('tablenice::forms.select-field', 'tablenice-select-field');
+        Blade::component('tablenice::forms.checkbox-field', 'tablenice-checkbox-field');
+        Blade::component('tablenice::forms.date-field', 'tablenice-date-field');
+        Blade::component('tablenice::forms.datetime-field', 'tablenice-datetime-field');
+        Blade::component('tablenice::forms.radio-field', 'tablenice-radio-field');
+        Blade::component('tablenice::forms.textarea-field', 'tablenice-textarea-field');
     }
 }
