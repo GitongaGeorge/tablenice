@@ -19,7 +19,7 @@ class MakeDatatableCommand extends GeneratorCommand
 
     protected function getDefaultNamespace($rootNamespace): string
     {
-        return $rootNamespace.'\Http\Livewire\Datatables';
+        return $rootNamespace.'\Livewire\Datatables';
     }
 
     protected function replaceClass($stub, $name): string

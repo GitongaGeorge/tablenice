@@ -40,6 +40,6 @@ class DummyClass extends Datatable
     // You would create this form using `php artisan make:form`
     // public function getUserForm(): string
     // {
-    //     return \App\Http\Livewire\Forms\UserForm::class;
+    //     return \App\Livewire\Forms\UserForm::class;
     // }
 }
