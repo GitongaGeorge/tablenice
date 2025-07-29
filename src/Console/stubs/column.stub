@@ -1,0 +1,25 @@
+<?php
+
+namespace DummyNamespace;
+
+use Mystamyst\Tablenice\Columns\Column;
+
+class DummyClass extends Column
+{
+    // protected properties for your custom column
+    // e.g., protected string $customProperty;
+
+    // public function customProperty(string $value): static
+    // {
+    //     $this->customProperty = $value;
+    //     return $this;
+    // }
+
+    // Override getValue or render methods if needed
+    // public function getValue(\Illuminate\Database\Eloquent\Model $record): mixed
+    // {
+    //     $value = parent::getValue($record);
+    //     // Custom logic here
+    //     return $value;
+    // }
+}
