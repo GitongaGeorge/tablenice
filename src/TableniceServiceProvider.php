@@ -71,8 +71,12 @@ class TableniceServiceProvider extends ServiceProvider
      */
     protected function registerBladeComponents()
     {
-        // --- FIXED: Switched to Blade::component for <x-tag> syntax ---
-        // --- and used conventional kebab-case for aliases.         ---
+        // --- FIXED: Added explicit Blade component registration for general UI elements ---
+        // This allows you to use <x-tablenice-button /> etc. for simple, non-Livewire components.
+        Blade::component('tablenice::forms.button', 'tablenice-button');
+        Blade::component('tablenice::forms.modal', 'tablenice-modal');
+        Blade::component('tablenice::forms.wizard', 'tablenice-wizard');
+        Blade::component('tablenice::forms.section', 'tablenice-section');
 
         // Datatable components
         Blade::component('tablenice::components.datatable.table', 'tablenice-table');
