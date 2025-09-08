@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Livewire;
+
+use Livewire\Component;
+use Livewire\Attributes\Layout;
+
+class DatatablePage extends Component
+{
+    /**
+     * The fully qualified class name of the Table configuration.
+     * This will be passed in from the route definition.
+     */
+    public string $tableClass;
+
+    /**
+     * The page title. This can be set from the route definition.
+     */
+    public string $title = '';
+
+    public function mount(string $tableClass, string $title = '')
+    {
+        $this->tableClass = $tableClass;
+        $this->title = $title ?: config('app.name');
+    }
+
+    public function render()
+    {
+        // This component's view will render the main datatable component
+        // inside your application's layout.
+        return view('livewire.datatable-page')
+            ->layout('components.layouts.app', ['title' => $this->title]);
+    }
+}
+

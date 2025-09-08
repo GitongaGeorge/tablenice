@@ -1,0 +1,6 @@
+<div>
+    {{-- This view is rendered by DatatablePage.php and hosts the TableNice component --}}
+    {{-- We pass the tableClass property from this page component into the datatable engine --}}
+    <livewire:tablenice-datatable :tableClass="$tableClass" />
+</div>
+

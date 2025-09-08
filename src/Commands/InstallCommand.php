@@ -7,25 +7,9 @@ use Illuminate\Support\Facades\File;
 
 class InstallCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'tablenice:install';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Install all of the TableNice resources and provide setup instructions.';
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
     public function handle()
     {
         $this->info('Installing TableNice...');
@@ -36,11 +20,16 @@ class InstallCommand extends Command
             '--tag' => 'tablenice-config'
         ]);
 
-        $this->comment('Publishing views for customization (optional)...');
-        $this->call('vendor:publish', [
-            '--provider' => 'Mystamyst\TableNice\TableNiceServiceProvider',
-            '--tag' => 'tablenice-views'
-        ]);
+        $this->comment('Publishing page component stubs for full-page tables...');
+        if (!File::exists(app_path('Livewire'))) {
+            File::makeDirectory(app_path('Livewire'));
+        }
+        if (!File::exists(resource_path('views/livewire'))) {
+            File::makeDirectory(resource_path('views/livewire'));
+        }
+        File::copy(__DIR__.'/stubs/datatable.page.stub', app_path('Livewire/DatatablePage.php'));
+        File::copy(__DIR__.'/stubs/datatablepageb.stub', resource_path('views/livewire/datatable-page.blade.php'));
+        $this->info('Published [app/Livewire/DatatablePage.php] and [resources/views/livewire/datatable-page.blade.php]');
 
         $this->info('TableNice scaffolding installed successfully.');
         $this->warn("\nNext steps are required:");

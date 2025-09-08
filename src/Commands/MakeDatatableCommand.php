@@ -16,7 +16,6 @@ class MakeDatatableCommand extends GeneratorCommand
 
     protected function getStub()
     {
-        // Use the stub from within the package
         return __DIR__ . '/stubs/datatable.stub';
     }
 
@@ -65,10 +64,6 @@ class MakeDatatableCommand extends GeneratorCommand
         return $stub;
     }
 
-    /**
-     * Generate the columns for the datatable.
-     * APPLIES USER-REQUESTED FORMATTING.
-     */
     protected function generateColumns($modelClass)
     {
         if (!class_exists($modelClass)) {
@@ -116,7 +111,9 @@ class MakeDatatableCommand extends GeneratorCommand
     protected function addRoute()
     {
         $tableClass = $this->qualifyClass($this->getNameInput());
-        $routeName = Str::of($this->getNameInput())->replace('Table', '')->kebab();
+        $tableName = Str::of($this->getNameInput())->replace('Table', '');
+        $routeName = $tableName->kebab();
+        $pageTitle = $tableName->plural()->title();
         $routeNameToSearch = "'" . $routeName . ".index'";
         
         $routesPath = base_path('routes/web.php');
@@ -127,8 +124,10 @@ class MakeDatatableCommand extends GeneratorCommand
             return;
         }
 
-        $livewireComponentRoute = "\nRoute::get('/" . $routeName . "', \App\Http\Livewire\DatatablePage::class)"
-            . "\n    ->with('tableClass', \\" . $tableClass . "::class)"
+        // CORRECTED: Uses modern Livewire 3 namespace and `defaults()` method
+        $livewireComponentRoute = "\nRoute::get('/" . $routeName . "', \App\Livewire\DatatablePage::class)"
+            . "\n    ->defaults('tableClass', \\" . $tableClass . "::class)"
+            . "\n    ->defaults('title', '{$pageTitle}')"
             . "\n    ->middleware('auth')->name({$routeNameToSearch});";
 
         File::append($routesPath, $livewireComponentRoute);
@@ -152,3 +151,4 @@ class MakeDatatableCommand extends GeneratorCommand
         ];
     }
 }
+
