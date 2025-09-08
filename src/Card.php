@@ -2,8 +2,8 @@
 
 namespace Mystamyst\TableNice;
 
-use App\DataTables\Enums\ChartType;
-use App\DataTables\Summaries\Contracts\Summary;
+use Mystamyst\TableNice\Enums\ChartType;
+use Mystamyst\TableNice\Summaries\Contracts\Summary;
 use Illuminate\Support\Collection;
 use NumberFormatter;
 

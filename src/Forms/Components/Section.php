@@ -2,10 +2,10 @@
 
 namespace Mystamyst\TableNice\Forms\Components;
 
-use App\Enums\HeroiconsIcon;
-use App\Enums\CarbonIconsIcon;
-use App\Enums\IconparkIcon;
-use App\Enums\PhosphorIconsIcon;
+use Mystamyst\TableNice\Enums\Icons\HeroiconsIcon;
+use Mystamyst\TableNice\Enums\Icons\CarbonIconsIcon;
+use Mystamyst\TableNice\Enums\Icons\IconparkIcon;
+use Mystamyst\TableNice\Enums\Icons\PhosphorIconsIcon;
 use Illuminate\Support\Facades\Gate;
 
 class Section

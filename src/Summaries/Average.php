@@ -2,7 +2,7 @@
 
 namespace Mystamyst\TableNice\Summaries;
 
-use App\DataTables\Summaries\Contracts\Summary;
+use Mystamyst\TableNice\Summaries\Contracts\Summary;
 use Illuminate\Support\Collection;
 
 class Average implements Summary

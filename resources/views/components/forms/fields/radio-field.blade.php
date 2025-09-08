@@ -49,7 +49,7 @@
                         default => 'bg-gray-600',
                     };
                     
-                    $isPrefix = $field->getIconPosition()->value === \App\DataTables\Enums\IconPosition::PREFIX->value;
+                    $isPrefix = $field->getIconPosition()->value === \Mystamyst\TableNice\Enums\IconPosition::PREFIX->value;
                 @endphp
                 
                 <label for="{{ $optionId }}" class="relative group">

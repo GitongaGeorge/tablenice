@@ -2,7 +2,7 @@
 
 namespace Mystamyst\TableNice\Actions;
 
-use App\Enums\HeroiconsIcon;
+use Mystamyst\TableNice\Enums\Icons\HeroiconsIcon;
 use Illuminate\Database\Eloquent\Model;
 
 class DeleteAction extends Action

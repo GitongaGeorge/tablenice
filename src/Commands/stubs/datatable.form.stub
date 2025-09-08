@@ -2,8 +2,8 @@
 
 namespace {{ namespace }};
 
-use App\DataTables\Forms\Fields\TextInput;
-use App\DataTables\Forms\Form;
+use Mystamyst\TableNice\Forms\Fields\TextInput;
+use Mystamyst\TableNice\Forms\Form;
 use App\Models\{{ modelName }};
 
 class {{ class }} extends Form

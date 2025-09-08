@@ -2,7 +2,7 @@
 
 namespace Mystamyst\TableNice;
 
-use App\DataTables\Enums\SortDirection;
+use Mystamyst\TableNice\Enums\SortDirection;
 use Illuminate\Support\Str;
 
 /**

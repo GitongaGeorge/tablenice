@@ -2,12 +2,12 @@
 
 namespace Mystamyst\TableNice\Columns;
 
-use App\DataTables\Enums\SortDirection;
-use App\DataTables\Enums\SummaryLocation;
-use App\DataTables\Enums\TextAlign;
-use App\DataTables\Group;
-use App\DataTables\Summaries\Contracts\Summary;
-use App\Enums\Color;
+use Mystamyst\TableNice\Enums\SortDirection;
+use Mystamyst\TableNice\Enums\SummaryLocation;
+use Mystamyst\TableNice\Enums\TextAlign;
+use Mystamyst\TableNice\Group;
+use Mystamyst\TableNice\Summaries\Contracts\Summary;
+use Mystamyst\TableNice\Enums\Color;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;

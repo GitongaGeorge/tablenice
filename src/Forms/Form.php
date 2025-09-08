@@ -2,7 +2,7 @@
 
 namespace Mystamyst\TableNice\Forms;
 
-use App\DataTables\Forms\Fields\Field;
+use Mystamyst\TableNice\Forms\Fields\Field;
 
 abstract class Form
 {

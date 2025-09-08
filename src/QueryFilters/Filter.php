@@ -3,7 +3,7 @@
 namespace Mystamyst\TableNice\QueryFilters;
 
 use Closure;
-use App\DataTables\Columns\Column;
+use Mystamyst\TableNice\Columns\Column;
 
 class Filter
 {

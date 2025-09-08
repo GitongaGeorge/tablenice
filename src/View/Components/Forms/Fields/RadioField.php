@@ -2,7 +2,7 @@
 
 namespace App\View\Components\Forms\Fields;
 
-use App\DataTables\Forms\Fields\RadioField as RadioFieldObject;
+use Mystamyst\TableNice\Forms\Fields\RadioField as RadioFieldObject;
 use Illuminate\View\Component;
 
 class RadioField extends Component

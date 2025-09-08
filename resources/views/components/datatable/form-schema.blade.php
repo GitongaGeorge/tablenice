@@ -3,7 +3,7 @@
 @foreach ($schema as $component)
     @if ($component->isVisible())
         @switch(true)
-            @case($component instanceof \App\DataTables\Forms\Components\Section)
+            @case($component instanceof \Mystamyst\TableNice\Forms\Components\Section)
                 <div
                     class="p-6 space-y-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-slate-800/50 dark:border-slate-700">
                     <div class="flex items-start space-x-4">
@@ -26,7 +26,7 @@
                 </div>
             @break
 
-            @case($component instanceof \App\DataTables\Forms\Components\FieldSet)
+            @case($component instanceof \Mystamyst\TableNice\Forms\Components\FieldSet)
                 <fieldset class="p-6 border border-gray-200 rounded-lg dark:border-slate-700">
                     @if ($component->getLabel())
                         <legend class="px-2 text-sm font-semibold text-gray-900 dark:text-white">{{ $component->getLabel() }}
@@ -38,7 +38,7 @@
                 </fieldset>
             @break
 
-            @case($component instanceof \App\DataTables\Forms\Fields\Field)
+            @case($component instanceof \Mystamyst\TableNice\Forms\Fields\Field)
                 <div @class([
                     'col-span-12' => $component->getColumnSpan() === 12,
                     'col-span-12 sm:col-span-6' => $component->getColumnSpan() === 6,

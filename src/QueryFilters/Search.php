@@ -4,7 +4,7 @@ namespace Mystamyst\TableNice\QueryFilters;
 
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
-use App\DataTables\Columns\Column;
+use Mystamyst\TableNice\Columns\Column;
 
 class Search
 {

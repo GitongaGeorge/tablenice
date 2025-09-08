@@ -2,11 +2,11 @@
 
 namespace Mystamyst\TableNice\Forms\Fields;
 
-use App\Enums\Color;
-use App\Enums\HeroiconsIcon;
-use App\Enums\PhosphorIconsIcon;
-use App\Enums\IconparkIcon;
-use App\Enums\CarbonIconsIcon;
+use Mystamyst\TableNice\Enums\Color;
+use Mystamyst\TableNice\Enums\Icons\HeroiconsIcon;
+use Mystamyst\TableNice\Enums\Icons\PhosphorIconsIcon;
+use Mystamyst\TableNice\Enums\Icons\IconparkIcon;
+use Mystamyst\TableNice\Enums\Icons\CarbonIconsIcon;
 
 class IconButton extends Field
 {

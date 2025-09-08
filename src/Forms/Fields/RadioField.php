@@ -2,7 +2,7 @@
 
 namespace Mystamyst\TableNice\Forms\Fields;
 
-use App\DataTables\Enums\IconPosition;
+use Mystamyst\TableNice\Enums\IconPosition;
 
 class RadioField extends Field
 {

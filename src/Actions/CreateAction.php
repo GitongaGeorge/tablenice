@@ -2,7 +2,7 @@
 
 namespace Mystamyst\TableNice\Actions;
 
-use App\Enums\HeroiconsIcon;
+use Mystamyst\TableNice\Enums\Icons\HeroiconsIcon;
 
 /**
  * A pre-built, reusable PageAction for creating new records.

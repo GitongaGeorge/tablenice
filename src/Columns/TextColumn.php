@@ -2,12 +2,12 @@
 
 namespace Mystamyst\TableNice\Columns;
 
-use App\DataTables\Enums\IconPosition;
-use App\Enums\CarbonIconsIcon;
-use App\Enums\Color; // Use Color enum
-use App\Enums\HeroiconsIcon;
-use App\Enums\IconparkIcon;
-use App\Enums\PhosphorIconsIcon;
+use Mystamyst\TableNice\Enums\IconPosition;
+use Mystamyst\TableNice\Enums\Icons\CarbonIconsIcon;
+use Mystamyst\TableNice\Enums\Color; // Use Color enum
+use Mystamyst\TableNice\Enums\Icons\HeroiconsIcon;
+use Mystamyst\TableNice\Enums\Icons\IconparkIcon;
+use Mystamyst\TableNice\Enums\Icons\PhosphorIconsIcon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Str;
