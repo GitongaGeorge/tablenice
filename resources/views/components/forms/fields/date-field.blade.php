@@ -36,7 +36,7 @@
     <label for="{{ $field->getName() }}_display" class="block text-sm font-medium text-gray-700 dark:text-slate-300">{{ $field->getLabel() }}</label>
     <div class="mt-1 relative">
         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-            <x-icon name="heroicon-s-calendar" class="h-5 w-5 text-gray-400" />
+            <x-tablenice-icon name="heroicon-s-calendar" class="h-5 w-5 text-gray-400" />
         </div>
         <input 
             x-ref="input"

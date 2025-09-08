@@ -67,7 +67,7 @@
                         <div class="flex items-center justify-between w-full">
                             <div class="flex items-center gap-x-2">
                                 @if(isset($option['icon']) && $isPrefix)
-                                    <x-icon :name="$option['icon']->value" class="w-5 h-5" />
+                                    <x-tablenice-icon :name="$option['icon']->value" class="w-5 h-5" />
                                 @endif
 
                                 <span class="text-sm font-semibold leading-tight">
@@ -75,7 +75,7 @@
                                 </span>
 
                                 @if(isset($option['icon']) && !$isPrefix)
-                                    <x-icon :name="$option['icon']->value" class="w-5 h-5" />
+                                    <x-tablenice-icon :name="$option['icon']->value" class="w-5 h-5" />
                                 @endif
                             </div>
 

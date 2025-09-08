@@ -1301,7 +1301,7 @@ enum HeroiconsIcon: string implements Icon
             $attributeString .= " {$key}=\"{$value}\"";
         }
 
-        // Returns a Blade component <x-icon>
-        return "<x-icon name=\"{$this->value}\"{$attributeString} />";
+        // Returns a Blade component <x-tablenice-icon>
+        return "<x-tablenice-icon name=\"{$this->value}\"{$attributeString} />";
     }
 }

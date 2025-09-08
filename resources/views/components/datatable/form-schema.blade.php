@@ -10,7 +10,7 @@
                         @if ($component->getIcon())
                             <div
                                 class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-100 rounded-full dark:bg-blue-900/50">
-                                <x-icon :name="$component->getIcon()->value" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                                <x-tablenice-icon :name="$component->getIcon()->value" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
                             </div>
                         @endif
                         <div>
