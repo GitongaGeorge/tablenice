@@ -1,12 +1,23 @@
 <?php
 
-namespace Mystamyst\Tablenice\Forms\Fields;
+namespace Mystamyst\TableNice\Forms\Fields;
 
 class CheckboxField extends Field
 {
-    public function __construct(string $name, ?string $label = null)
+    protected string $type = 'checkbox';
+
+    /**
+     * Explicitly define the view for this field.
+     */
+    protected ?string $view = 'components.forms.fields.checkbox-field';
+
+    public function __construct(string $name)
     {
-        parent::__construct($name, $label);
-        $this->rules('boolean'); // Checkbox values are typically boolean
+        parent::__construct($name);
+    }
+
+    public function toHtml(): string
+    {
+        return '';
     }
 }

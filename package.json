@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "chart.js": "^4.5.0",
+    "dayjs": "^1.11.18",
+    "litepicker": "^2.0.12",
+    "trix": "^2.1.15"
+  }
+}

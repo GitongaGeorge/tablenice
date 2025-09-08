@@ -1,33 +1,99 @@
 <?php
 
-namespace Mystamyst\Tablenice\Forms\Components;
+namespace Mystamyst\TableNice\Forms\Components;
 
-use Livewire\Component;
+use App\Enums\HeroiconsIcon;
+use App\Enums\CarbonIconsIcon;
+use App\Enums\IconparkIcon;
+use App\Enums\PhosphorIconsIcon;
+use Illuminate\Support\Facades\Gate;
 
-class Section extends Component
+class Section
 {
-    public string $title;
-    public ?string $description = null;
-    public bool $collapsible = false;
-    public bool $collapsed = false;
+    protected string $title;
+    protected ?string $subtitle = null;
+    protected HeroiconsIcon|CarbonIconsIcon|IconparkIcon|PhosphorIconsIcon|null $icon = null;
+    protected array $schema = [];
+    /**
+     * @var bool|callable
+     */
+    protected $isVisible = true;
 
-    public function mount(string $title, ?string $description = null, bool $collapsible = false, bool $collapsed = false)
+    public function __construct(string $title)
     {
         $this->title = $title;
-        $this->description = $description;
-        $this->collapsible = $collapsible;
-        $this->collapsed = $collapsed;
     }
 
-    public function toggleCollapse()
+    public static function make(string $title): static
     {
-        if ($this->collapsible) {
-            $this->collapsed = !$this->collapsed;
+        return new static($title);
+    }
+
+    /**
+     * Set the permission required to see this section.
+     */
+    public function permission(string $permissionName): self
+    {
+        $this->isVisible = fn () => Gate::allows($permissionName);
+        return $this;
+    }
+
+    /**
+     * Set the visibility of the section.
+     */
+    public function visible($condition): self
+    {
+        $this->isVisible = $condition;
+        return $this;
+    }
+
+    /**
+     * Determine if the section is currently visible.
+     */
+    public function isVisible(): bool
+    {
+        if (is_callable($this->isVisible)) {
+            return call_user_func($this->isVisible);
         }
+
+        return $this->isVisible;
     }
 
-    public function render()
+    public function subtitle(?string $subtitle): static
     {
-        return \view('tablenice::forms.section');
+        $this->subtitle = $subtitle;
+        return $this;
+    }
+
+    public function icon(HeroiconsIcon|CarbonIconsIcon|IconparkIcon|PhosphorIconsIcon|null $icon): static
+    {
+        $this->icon = $icon;
+        return $this;
+    }
+
+    public function schema(array $fields): static
+    {
+        $this->schema = $fields;
+        return $this;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getSubtitle(): ?string
+    {
+        return $this->subtitle;
+    }
+
+    public function getIcon(): HeroiconsIcon|CarbonIconsIcon|IconparkIcon|PhosphorIconsIcon|null
+    {
+        return $this->icon;
+    }
+
+    public function getSchema(): array
+    {
+        return $this->schema;
     }
 }

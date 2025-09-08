@@ -1,11 +1,21 @@
 <?php
 
-namespace Mystamyst\Tablenice\Forms\Fields;
+namespace Mystamyst\TableNice\Forms\Fields;
 
 class SelectField extends Field
 {
-    protected array $options = []; // ['value' => 'label']
-    protected bool $multiple = false;
+    protected string $type = 'select';
+    protected array $options = [];
+
+    /**
+     * Explicitly define the view for this field.
+     */
+    protected ?string $view = 'components.forms.fields.select-field';
+
+    public function __construct(string $name)
+    {
+        parent::__construct($name);
+    }
 
     public function options(array $options): static
     {
@@ -18,17 +28,8 @@ class SelectField extends Field
         return $this->options;
     }
 
-    public function multiple(bool $multiple = true): static
+    public function toHtml(): string
     {
-        $this->multiple = $multiple;
-        if ($multiple) {
-            $this->rules[] = 'array';
-        }
-        return $this;
-    }
-
-    public function isMultiple(): bool
-    {
-        return $this->multiple;
+        return '';
     }
 }

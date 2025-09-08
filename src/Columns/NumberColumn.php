@@ -1,37 +1,77 @@
 <?php
 
-namespace Mystamyst\Tablenice\Columns;
+namespace Mystamyst\TableNice\Columns;
+
+use Illuminate\Database\Eloquent\Model;
+use NumberFormatter;
 
 class NumberColumn extends Column
 {
-    protected int $decimals = 0;
-    protected string $decimalPoint = '.';
-    protected string $thousandsSeparator = ',';
+    protected $formatCallback = null;
 
-    public function decimals(int $decimals): static
+    public function format(callable $callback): self
     {
-        $this->decimals = $decimals;
+        $this->formatCallback = $callback;
         return $this;
     }
 
-    public function decimalPoint(string $point): static
+    public function currency(string $currency = 'USD', string $locale = 'en_US'): self
     {
-        $this->decimalPoint = $point;
-        return $this;
+        return $this->format(function ($value) use ($currency, $locale) {
+            if (!is_numeric($value)) return $value;
+            $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
+            return $formatter->formatCurrency($value, $currency);
+        });
     }
 
-    public function thousandsSeparator(string $separator): static
+    public function decimal(int $decimals = 2): self
     {
-        $this->thousandsSeparator = $separator;
-        return $this;
+        return $this->format(function ($value) use ($decimals) {
+            if (!is_numeric($value)) return $value;
+            return number_format($value, $decimals);
+        });
     }
 
-    public function getValue(\Illuminate\Database\Eloquent\Model $record): mixed
+    public function formatValue($value, ?Model $model = null)
     {
-        $value = parent::getValue($record);
-        if (is_numeric($value)) {
-            return number_format($value, $this->decimals, $this->decimalPoint, $this->thousandsSeparator);
+        if ($this->formatCallback) {
+            return call_user_func($this->formatCallback, $value, $model);
         }
         return $value;
+    }
+
+    public function toHtml(Model $model): string
+    {
+        $value = $this->resolveValue($model);
+        $formattedValue = $this->formatValue($value, $model);
+
+        $alignmentClass = $this->getAlignmentClass() ?: 'text-right';
+
+        $tooltipAttributes = '';
+        if ($this->tooltip) {
+            $tooltipText = is_callable($this->tooltip) ? call_user_func($this->tooltip, $model) : $this->tooltip;
+            $escapedContent = addslashes($tooltipText);
+            $tooltipAttributes = sprintf(
+                ' @mouseenter="$store.tooltip.show($el, \'%s\')" @mouseleave="$store.tooltip.hide()"',
+                $escapedContent
+            );
+        }
+        
+        $finalClasses = trim(sprintf(
+            'px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-slate-200 %s %s',
+            $alignmentClass,
+            $this->getStickyClasses()
+        ));
+
+        $styles = $this->getStyles();
+        $styleAttribute = $styles ? sprintf('style="%s"', $styles) : '';
+
+        return sprintf(
+            '<td class="%s" %s %s>%s</td>',
+            $finalClasses,
+            $styleAttribute,
+            $tooltipAttributes,
+            e($formattedValue)
+        );
     }
 }

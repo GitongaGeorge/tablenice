@@ -1,32 +1,53 @@
 <?php
 
-namespace Mystamyst\Tablenice\Columns;
+namespace Mystamyst\TableNice\Columns;
 
 use Illuminate\Database\Eloquent\Model;
 
 class IndexColumn extends Column
 {
-    public function __construct(string $label = '#')
+    protected int $startIndex = 1;
+    protected int $currentPage = 1;
+    protected int $perPage = 15;
+
+    public static function make(string $name = 'index', ?string $label = '#'): static
     {
-        parent::__construct('index', $label);
+        return (new static($name, $label))->sticky();
     }
 
-    public static function make(string $name, string|null $label = null): static
+    public function paginated(int $currentPage, int $perPage): self
     {
-        // The $name parameter is ignored for IndexColumn, but required for compatibility.
-        return new static($label ?? '#');
+        $this->currentPage = $currentPage;
+        $this->perPage = $perPage;
+        return $this;
     }
 
-    public function getValue(Model $record): mixed
+    public function toHtml(Model $model, int $loopIndex = 0): string
     {
-        // This column's value is dependent on the pagination/loop, not the model.
-        // It will be handled in the Blade view.
-        return null;
-    }
+        $rowIndex = (($this->currentPage - 1) * $this->perPage) + $loopIndex + $this->startIndex;
 
-    public function render(Model $record)
-    {
-        // This column will typically be rendered in the Blade loop with the loop index.
-        return null; // Will be handled in the Blade.
+        $tooltipAttributes = '';
+        if ($this->tooltip) {
+            $tooltipText = is_callable($this->tooltip) ? call_user_func($this->tooltip, $model) : $this->tooltip;
+            $escapedContent = addslashes($tooltipText);
+            $tooltipAttributes = sprintf(
+                ' @mouseenter="$store.tooltip.show($el, \'%s\')" @mouseleave="$store.tooltip.hide()"',
+                $escapedContent
+            );
+        }
+
+        $baseClasses = 'px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 dark:text-slate-400';
+        $finalClasses = trim(sprintf('%s %s %s', $baseClasses, $this->getAlignmentClass(), $this->getStickyClasses()));
+        
+        $styles = $this->getStyles();
+        $styleAttribute = $styles ? sprintf('style="%s"', $styles) : '';
+
+        return sprintf(
+            '<td class="%s" %s %s>%d</td>',
+            $finalClasses,
+            $styleAttribute,
+            $tooltipAttributes,
+            $rowIndex
+        );
     }
 }

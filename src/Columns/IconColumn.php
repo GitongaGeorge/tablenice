@@ -1,45 +1,87 @@
 <?php
 
-namespace Mystamyst\Tablenice\Columns;
+namespace Mystamyst\TableNice\Columns;
+
+use App\Enums\CarbonIconsIcon;
+use App\Enums\Color; // Use Color enum
+use App\Enums\HeroiconsIcon;
+use App\Enums\IconparkIcon;
+use App\Enums\PhosphorIconsIcon;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Blade;
 
 class IconColumn extends Column
 {
-    protected array $icons = []; // ['value' => 'heroicon-o-icon-name']
-    protected string $defaultIcon = 'heroicon-o-question-mark-circle';
-    protected array $iconColors = []; // ['value' => 'text-color-class']
-    protected string $defaultIconColor = 'text-gray-400';
+    protected $icon = null;
+    protected $iconColor = null; // Can be Color enum or callable
+    protected $iconSize = 'h-6 w-6';
 
-    public function icons(array $icons): static
+    public function __construct(string $name, ?string $label)
     {
-        $this->icons = $icons;
+        parent::__construct($name, $label ?? '', 'icon');
+    }
+
+    public function icon($icon): self
+    {
+        $this->icon = $icon;
+        return $this;
+    }
+    
+    // ** MODIFIED: Accepts Color enum **
+    public function color(Color|callable $color): self
+    {
+        $this->iconColor = $color;
         return $this;
     }
 
-    public function defaultIcon(string $iconName): static
+    public function size(string|callable $sizeClass): self
     {
-        $this->defaultIcon = $iconName;
+        $this->iconSize = $sizeClass;
         return $this;
     }
 
-    public function iconColors(array $colors): static
+    public function toHtml(Model $model): string
     {
-        $this->iconColors = $colors;
-        return $this;
-    }
+        $icon = is_callable($this->icon) ? call_user_func($this->icon, $model) : $this->icon;
+        
+        if (!$icon) {
+            return '<td></td>';
+        }
 
-    public function defaultIconColor(string $colorClass): static
-    {
-        $this->defaultIconColor = $colorClass;
-        return $this;
-    }
+        $colorEnum = is_callable($this->iconColor) ? call_user_func($this->iconColor, $model) : $this->iconColor;
+        $colorClass = $this->colorEnumToTextColorClass($colorEnum) ?: 'text-gray-500 dark:text-gray-400';
+        $size = is_callable($this->iconSize) ? call_user_func($this->iconSize, $model) : $this->iconSize;
 
-    public function render(\Illuminate\Database\Eloquent\Model $record)
-    {
-        $value = parent::getValue($record);
-        $icon = $this->icons[$value] ?? $this->defaultIcon;
-        $color = $this->iconColors[$value] ?? $this->defaultIconColor;
+        $iconComponentString = $icon->toHtml(['class' => $size . ' ' . $colorClass]);
+        $renderedIconHtml = Blade::render($iconComponentString);
+        
+        $alignmentClass = $this->getAlignmentClass() ?: 'text-center';
 
-        // Assuming you have Heroicons setup in your main app, e.g., via Blade UI Kit or directly
-        return "<span class=\"{$color}\"><x-heroicon-o-{$icon} class=\"h-5 w-5\" /></span>";
+        $tooltipAttributes = '';
+        if ($this->tooltip) {
+            $tooltipText = is_callable($this->tooltip) ? call_user_func($this->tooltip, $model) : $this->tooltip;
+            $escapedContent = addslashes($tooltipText);
+            $tooltipAttributes = sprintf(
+                ' @mouseenter="$store.tooltip.show($el, \'%s\')" @mouseleave="$store.tooltip.hide()"',
+                $escapedContent
+            );
+        }
+        
+        $finalClasses = trim(sprintf(
+            'px-6 py-4 whitespace-nowrap text-sm %s %s',
+            $alignmentClass,
+            $this->getStickyClasses()
+        ));
+
+        $styles = $this->getStyles();
+        $styleAttribute = $styles ? sprintf('style="%s"', $styles) : '';
+
+        return sprintf(
+            '<td class="%s" %s %s>%s</td>',
+            $finalClasses,
+            $styleAttribute,
+            $tooltipAttributes,
+            $renderedIconHtml
+        );
     }
 }

@@ -1,26 +1,14 @@
 <?php
 
-namespace Mystamyst\Tablenice\Forms\Fields;
+namespace Mystamyst\TableNice\Forms\Fields;
 
-class DateField extends Field
+class DateField extends TextInput
 {
-    protected ?string $format = null; // Display format, e.g., 'Y-m-d'
+    protected string $type = 'text';
 
-    public function __construct(string $name, ?string $label = null)
-    {
-        parent::__construct($name, $label);
-        $this->rules('date');
-        $this->type('date'); // Set input type
-    }
-
-    public function format(string $format): static
-    {
-        $this->format = $format;
-        return $this;
-    }
-
-    public function getFormat(): ?string
-    {
-        return $this->format;
-    }
+    /**
+     * Explicitly define the view for this field.
+     */
+    protected ?string $view = 'components.forms.fields.date-field';
 }
+

@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap');
+@import 'tailwindcss';
+@import '../../vendor/livewire/flux/dist/flux.css';
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
+@source '../../vendor/livewire/flux/stubs/**/*.blade.php';
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-zinc-50: #fafafa;
+    --color-zinc-100: #f5f5f5;
+    --color-zinc-200: #e5e5e5;
+    --color-zinc-300: #d4d4d4;
+    --color-zinc-400: #a3a3a3;
+    --color-zinc-500: #737373;
+    --color-zinc-600: #525252;
+    --color-zinc-700: #404040;
+    --color-zinc-800: #262626;
+    --color-zinc-900: #171717;
+    --color-zinc-950: #0a0a0a;
+
+    --color-accent: var(--color-neutral-800);
+    --color-accent-content: var(--color-neutral-800);
+    --color-accent-foreground: var(--color-white);
+}
+
+@layer theme {
+    .dark {
+        --color-accent: var(--color-white);
+        --color-accent-content: var(--color-white);
+        --color-accent-foreground: var(--color-neutral-800);
+    }
+}
+
+@layer base {
+
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+
+    button {
+        @apply cursor-pointer;
+    }
+
+    /* Remove default browser outline on focus to allow theme-friendly rings */
+    input:focus,
+    textarea:focus,
+    select:focus {
+        @apply outline-none;
+    }
+
+    /* Style for invalid form fields */
+    input:invalid,
+    textarea:invalid,
+    select:invalid {
+        @apply ring-2 ring-red-500 border-red-500;
+    }
+}
+
+@layer components {
+    .font-handwritten {
+        font-family: 'Kalam', cursive;
+    }
+}
+
+[data-flux-field]:not(ui-radio, ui-checkbox) {
+    @apply grid gap-2;
+}
+
+[data-flux-label] {
+    @apply !mb-0 !leading-tight;
+}
+
+input:focus[data-flux-control],
+textarea:focus[data-flux-control],
+select:focus[data-flux-control] {
+    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+}
+
+
+/* --- START: TRIX EDITOR THEME --- */
+
+@layer components {
+    @import 'trix/dist/trix.css';
+
+    /* Main container styles */
+    .trix-container {
+        @apply border border-gray-300 bg-white dark:border-slate-600 dark:bg-slate-700;
+    }
+
+    .trix-container:focus-within {
+        @apply ring-2 ring-blue-500/50 border-blue-500 dark:border-blue-400;
+    }
+
+    /* Toolbar styles */
+    trix-toolbar {
+        @apply bg-gradient-to-r from-blue-50/80 to-slate-50/80 backdrop-blur-sm dark:from-blue-900/30 dark:to-slate-800/30;
+        @apply p-2 border-b border-gray-300 dark:border-slate-600 flex flex-wrap items-center gap-x-3 gap-y-2;
+    }
+
+    /* Toolbar button groups */
+    trix-toolbar .trix-button-group {
+        @apply border-none rounded-lg shadow-sm bg-white/50 dark:bg-slate-900/50;
+        @apply flex items-center;
+    }
+
+    /* Theme the buttons */
+    trix-toolbar .trix-button {
+        @apply transition-colors duration-200 rounded-none border-0;
+    }
+
+    trix-toolbar .trix-button:not(:first-child) {
+        border-left: 1px solid theme('colors.slate.200');
+    }
+
+    .dark trix-toolbar .trix-button:not(:first-child) {
+        border-left: 1px solid theme('colors.slate.700');
+    }
+
+    trix-toolbar .trix-button:hover {
+        @apply bg-blue-100 dark:bg-slate-700;
+    }
+
+    trix-toolbar .trix-button.trix-active {
+        @apply bg-blue-500 dark:bg-blue-600;
+    }
+
+    .dark trix-toolbar .trix-button:not(.trix-active)::before {
+        filter: invert(1);
+    }
+
+    /* Dialogs (for links, etc.) */
+    trix-toolbar .trix-dialog {
+        @apply bg-white dark:bg-slate-800 border-gray-300 dark:border-slate-600 rounded-lg shadow-lg p-3;
+    }
+
+    trix-toolbar .trix-dialog__link-fields .trix-input {
+        @apply block w-full px-3 py-2 transition-colors duration-200 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:bg-slate-700 dark:border-slate-600 dark:text-slate-200 dark:focus:border-blue-400 dark:focus:ring-blue-400;
+    }
+
+    trix-toolbar .trix-dialog__link-fields .trix-button-group {
+        @apply mt-2;
+    }
+
+    trix-toolbar .trix-dialog__link-fields .trix-button {
+        @apply px-3 py-1.5 text-sm font-medium rounded-md;
+    }
+
+    trix-toolbar .trix-dialog__link-fields .trix-button--create {
+        @apply bg-blue-500 text-white hover:bg-blue-600;
+    }
+
+    trix-toolbar .trix-dialog__link-fields .trix-button--remove {
+        @apply bg-slate-200 text-slate-700 hover:bg-slate-300 dark:bg-slate-600 dark:text-slate-200 dark:hover:bg-slate-500;
+    }
+
+    /* Trix editor content area */
+    .trix-content {
+        @apply p-4 min-h-[200px];
+        @apply text-slate-800 dark:text-slate-200;
+        @apply prose prose-sm sm:prose-base lg:prose-lg max-w-none dark:prose-invert;
+    }
+
+    /* --- START: DEFINITIVE FIX FOR TRIX STYLING CONFLICT --- */
+    /*
+     * This block resets Trix's default styles for block elements so that
+     * the Tailwind Typography plugin (.prose) can apply its own styling without conflict.
+    */
+    .trix-content h1,
+    .trix-content blockquote,
+    .trix-content pre,
+    .trix-content del {
+        all: unset;
+    }
+
+    /* --- END: DEFINITIVE FIX FOR TRIX STYLING CONFLICT --- */
+
+
+    /* Disabled state */
+    .trix-content.is-disabled {
+        @apply bg-slate-100 dark:bg-slate-800/50 opacity-70 cursor-not-allowed;
+    }
+
+    /* Un-hide the attachment button for image uploads */
+    /*
+    trix-toolbar .trix-button--icon-attach {
+        display: none;
+    }
+    */
+}
+
+/* --- END: TRIX EDITOR THEME --- */

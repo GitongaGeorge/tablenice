@@ -1,45 +1,27 @@
 <?php
 
-namespace Mystamyst\Tablenice\Forms;
+namespace Mystamyst\TableNice\Forms;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Validator;
-use Mystamyst\Tablenice\Contracts\HasFormFields;
-use Mystamyst\Tablenice\Forms\Concerns\HasFields;
-use Mystamyst\Tablenice\Forms\Concerns\HasValidation;
+use App\DataTables\Forms\Fields\Field;
 
-abstract class Form implements HasFormFields
+abstract class Form
 {
-    use HasFields, HasValidation;
+    /**
+     * Define the fields that make up the form.
+     *
+     * @return Field[]
+     */
+    abstract public function getFields(): array;
 
-    protected string $title = 'Form';
-
-    public function getTitle(): string
+    /**
+     * Get the form fields as an associative array.
+     *
+     * @return array
+     */
+    public function schema(): array
     {
-        return $this->title;
+        return collect($this->getFields())
+            ->mapWithKeys(fn (Field $field) => [$field->getName() => $field])
+            ->all();
     }
-
-    /**
-     * Define the fields for the form.
-     *
-     * @return array< \Mystamyst\Tablenice\Forms\Fields\Field>
-     */
-    abstract public function getFormFields(): array;
-
-    /**
-     * Logic to create a new record.
-     *
-     * @param array $data
-     * @return Model
-     */
-    abstract public function create(array $data): Model;
-
-    /**
-     * Logic to update an existing record.
-     *
-     * @param Model $record
-     * @param array $data
-     * @return Model
-     */
-    abstract public function update(Model $record, array $data): Model;
 }

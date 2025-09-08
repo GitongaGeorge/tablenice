@@ -1,58 +1,31 @@
 <?php
 
-namespace Mystamyst\Tablenice\Actions;
+namespace Mystamyst\TableNice\Actions;
 
-use Mystamyst\Tablenice\Forms\Form;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Session;
 
 class EditAction extends Action
 {
-    protected ?string $formClass = null;
+    protected ?string $successMessage = 'Record updated successfully.';
 
-    public function __construct(string $name = 'edit', string $label = 'Edit')
+    public function __construct(string $name = 'edit')
     {
-        parent::__construct($name, $label);
-        $this->icon('heroicon-o-pencil');
-        $this->color('primary');
-        $this->confirmation = 'Are you sure you want to edit this record?';
+        parent::__construct($name);
     }
 
-    public function form(string $formClass): static
+    /**
+     * Static factory method for cleaner instantiation.
+     */
+    public static function make(string $name = 'edit'): static
     {
-        $this->formClass = $formClass;
-        return $this;
+        return new static($name);
     }
 
-    public function getFormClass(): ?string
+    /**
+     * The signature of this method now matches the parent Action class.
+     */
+    public function runOnModel(Model $model, array $data = [])
     {
-        return $this->formClass;
-    }
-
-    public function handle(...$records): mixed
-    {
-        if (empty($records) || !($records[0] instanceof Model)) {
-            Session::flash('error', 'No record provided for editing.');
-            return null;
-        }
-
-        $record = $records[0];
-
-        if ($this->before instanceof \Closure) {
-            ($this->before)($record);
-        }
-
-        if ($this->formClass) {
-            // Emit Livewire event to open the form modal
-            $this->dispatch('openFormModal', $this->formClass, $record->getKey());
-        } else {
-            Session::flash('error', 'No form defined for this edit action.');
-        }
-
-        if ($this->after instanceof \Closure) {
-            ($this->after)($record);
-        }
-
-        return null;
+        $model->update($data);
     }
 }

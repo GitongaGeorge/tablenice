@@ -1,42 +1,30 @@
 <?php
 
-namespace Mystamyst\Tablenice\Actions;
+namespace Mystamyst\TableNice\Actions;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Session;
 
 class ViewAction extends Action
 {
-    protected ?string $viewRoute = null; // Route name to redirect to for viewing
-
-    public function __construct(string $name = 'view', string $label = 'View')
+    public function __construct(string $name = 'view')
     {
-        parent::__construct($name, $label);
-        $this->icon('heroicon-o-eye');
-        $this->color('secondary');
+        parent::__construct($name);
+        $this->disabled();
     }
 
-    public function route(string $routeName): static
+    /**
+     * Static factory method for cleaner instantiation.
+     */
+    public static function make(string $name = 'view'): static
     {
-        $this->viewRoute = $routeName;
-        return $this;
+        return new static($name);
     }
 
-    public function handle(...$records): mixed
+    /**
+     * This action is for viewing only, so it performs no operation.
+     */
+    public function runOnModel(Model $model, array $data = [])
     {
-        if (empty($records) || !($records[0] instanceof Model)) {
-            Session::flash('error', 'No record provided for viewing.');
-            return null;
-        }
-
-        $record = $records[0];
-
-        if ($this->viewRoute) {
-            return \redirect()->route($this->viewRoute, $record->getKey());
-        } else {
-            Session::flash('info', 'View route not configured for this action.');
-            // Optionally, open a read-only modal or display details here
-        }
-        return null;
+        // No operation is needed for a view action.
     }
 }

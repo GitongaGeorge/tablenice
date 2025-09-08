@@ -1,0 +1,64 @@
+<?php
+
+namespace {{ namespace }};
+
+use Mystamyst\TableNice\Actions\CreateAction;
+use Mystamyst\TableNice\Actions\DeleteAction;
+use Mystamyst\TableNice\Actions\EditAction;
+use Mystamyst\TableNice\Columns\DateTimeColumn;
+use Mystamyst\TableNice\Columns\TextColumn;
+use Mystamyst\TableNice\Enums\Theme;
+use Mystamyst\TableNice\Table;
+use App\Models\{{ modelName }};
+use {{ formClass }};
+
+class {{ class }} extends Table
+{
+    /**
+     * The Eloquent model class for the table.
+     */
+    public string $model = {{ modelName }}::class;
+
+    /**
+     * Defines the columns of the table.
+     */
+    public function columns(): array
+    {
+        return [
+{{ columns }}
+        ];
+    }
+
+    /**
+     * Defines the color theme for the table.
+     */
+    public function theme(): Theme
+    {
+        return Theme::{{ theme }};
+    }
+
+    /**
+     * Defines actions that appear at the top of the page.
+     */
+    public function pageActions(): array
+    {
+        return [
+            CreateAction::make()
+                ->form({{ formClass }}::class),
+        ];
+    }
+
+    /**
+     * Defines the actions available for each row.
+     */
+    public function actions(): array
+    {
+        return [
+            EditAction::make()
+                ->form({{ formClass }}::class),
+            
+            DeleteAction::make()
+                ->requiresConfirmation(),
+        ];
+    }
+}

@@ -1,49 +1,46 @@
 <?php
 
+// mystamyst/tablenice configuration
 return [
-    /*
-    |--------------------------------------------------------------------------
-    | Default Pagination
-    |--------------------------------------------------------------------------
-    |
-    | This option controls the default number of items per page
-    |
-    */
-    'per_page' => 10,
-    
-    /*
-    |--------------------------------------------------------------------------
-    | Per Page Options
-    |--------------------------------------------------------------------------
-    |
-    | Available options for items per page
-    |
-    */
-    'per_page_options' => [5, 10, 25, 50, 100],
-    
+
     /*
     |--------------------------------------------------------------------------
     | Search Placeholder
     |--------------------------------------------------------------------------
     |
-    | Default placeholder text for search input
+    | This value will be used as the default placeholder text for the main
+    | search input on the datatable.
     |
     */
-    'search_placeholder' => 'Search...',
-    
-    
-    'views' => [
-        'layout' => 'tablenice::layouts.app', // Default layout for your Livewire components
-    ],
+    'search_placeholder' => 'Search Records...',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Pagination Settings
+    |--------------------------------------------------------------------------
+    |
+    | Configure the default pagination behavior for all datatables. These
+    | values are used to populate the 'items per page' dropdown and set
+    | the initial number of records to display.
+    |
+    */
     'pagination' => [
         'default_per_page' => 10,
         'per_page_options' => [10, 25, 50, 100],
-        'view' => 'tablenice::pagination.tablenice', // Custom pagination view
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Modal Settings
+    |--------------------------------------------------------------------------
+    |
+    | Define the default appearance and behavior of modals that are opened
+    | by TableNice actions.
+    |
+    */
     'modal' => [
-        'default_width' => '2xl', // e.g., 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl'
-        'default_close_button' => true,
+        // Options: 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'
+        'default_width' => '2xl',
     ],
 ];
+

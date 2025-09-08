@@ -1,0 +1,27 @@
+<?php
+
+namespace {{ namespace }};
+
+use App\DataTables\Forms\Fields\TextInput;
+use App\DataTables\Forms\Form;
+use App\Models\{{ modelName }};
+
+class {{ class }} extends Form
+{
+    /**
+     * The Eloquent model class for this form.
+     */
+    public string $model = {{ modelName }}::class;
+
+    /**
+     * Define the fields that make up the form.
+     *
+     * @return array
+     */
+    public function getFields(): array
+    {
+        return [
+{{ fields }}
+        ];
+    }
+}

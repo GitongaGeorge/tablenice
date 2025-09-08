@@ -1,45 +1,33 @@
 <?php
 
-namespace Mystamyst\Tablenice\Actions;
+namespace Mystamyst\TableNice\Actions;
 
+use App\Enums\HeroiconsIcon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Session;
 
 class DeleteAction extends Action
 {
-    public function __construct(string $name = 'delete', string $label = 'Delete')
+    protected ?string $successMessage = 'Record deleted successfully.';
+    protected $successIcon = HeroiconsIcon::S_CHECK_CIRCLE;
+
+    public function __construct(string $name = 'delete')
     {
-        parent::__construct($name, $label);
-        $this->icon('heroicon-o-trash');
-        $this->color('danger');
-        $this->confirmation('Are you sure you want to delete this record? This action cannot be undone.');
+        parent::__construct($name);
     }
 
-    public function handle(...$records): mixed
+    /**
+     * Static factory method for cleaner instantiation.
+     */
+    public static function make(string $name = 'delete'): static
     {
-        if (empty($records) || !($records[0] instanceof Model)) {
-            Session::flash('error', 'No record provided for deletion.');
-            return null;
-        }
+        return new static($name);
+    }
 
-        $record = $records[0];
-
-        if ($this->before instanceof \Closure) {
-            ($this->before)($record);
-        }
-
-        try {
-            $record->delete();
-            Session::flash('success', 'Record deleted successfully!');
-            $this->dispatch('refreshDatatable');
-        } catch (\Exception $e) {
-            Session::flash('error', 'Error deleting record: ' . $e->getMessage());
-        }
-
-        if ($this->after instanceof \Closure) {
-            ($this->after)($record);
-        }
-
-        return null;
+    /**
+     * The signature of this method now matches the parent Action class.
+     */
+    public function runOnModel(Model $model, array $data = [])
+    {
+        $model->delete();
     }
 }

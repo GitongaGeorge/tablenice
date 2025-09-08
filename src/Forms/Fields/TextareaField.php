@@ -1,19 +1,23 @@
 <?php
 
-namespace Mystamyst\Tablenice\Forms\Fields;
+namespace Mystamyst\TableNice\Forms\Fields;
 
 class TextareaField extends Field
 {
-    protected int $rows = 3;
+    protected string $type = 'textarea';
 
-    public function rows(int $rows): static
+    /**
+     * Explicitly define the view for this field.
+     */
+    protected ?string $view = 'components.forms.fields.textarea-field';
+
+    public function __construct(string $name)
     {
-        $this->rows = $rows;
-        return $this;
+        parent::__construct($name);
     }
 
-    public function getRows(): int
+    public function toHtml(): string
     {
-        return $this->rows;
+        return '';
     }
 }
