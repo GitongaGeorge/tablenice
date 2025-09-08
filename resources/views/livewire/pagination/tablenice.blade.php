@@ -1,13 +1,13 @@
 @php
-if (! isset($scrollTo)) {
-    $scrollTo = 'body';
-}
+    if (!isset($scrollTo)) {
+        $scrollTo = 'body';
+    }
 
-$scrollIntoViewJsSnippet = ($scrollTo !== false)
-    ? <<<JS
-       (\$el.closest('{$scrollTo}') || document.querySelector('{$scrollTo}')).scrollIntoView()
-    JS
-    : '';
+    $scrollIntoViewJsSnippet = ($scrollTo !== false)
+        ? <<<JS
+           (\$el.closest('{$scrollTo}') || document.querySelector('{$scrollTo}')).scrollIntoView()
+        JS
+        : '';
 @endphp
 
 <div>
@@ -22,16 +22,15 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
                             $this->theme['paginationDisabledButtonBg'],
                             $this->theme['paginationDisabledButtonText']
                         ])>
-                            <x-icon name="heroicon-s-chevron-left" class="w-5 h-5" />
+                            <x-tablenice-icon name="heroicon-s-chevron-left" class="w-5 h-5" />
                         </span>
                     @else
-                        <button wire:click.prevent="previousPage" rel="prev"
-                        @class([
+                        <button wire:click.prevent="previousPage" rel="prev" @class([
                             'relative inline-flex items-center justify-center w-10 h-10 text-sm rounded-full shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-110 hover:-translate-y-1',
                             $this->theme['paginationButtonBg'],
                             $this->theme['paginationButtonText']
                         ])>
-                            <x-icon name="heroicon-s-chevron-left" class="w-5 h-5" />
+                            <x-tablenice-icon name="heroicon-s-chevron-left" class="w-5 h-5" />
                         </button>
                     @endif
 
@@ -59,8 +58,7 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
                                             {{ $page }}
                                         </span>
                                     @else
-                                        <button wire:click.prevent="gotoPage({{ $page }})"
-                                        @class([
+                                        <button wire:click.prevent="gotoPage({{ $page }})" @class([
                                             'relative inline-flex items-center justify-center w-10 h-10 text-sm font-medium rounded-full shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-110 hover:-translate-y-1',
                                             $this->theme['paginationButtonBg'],
                                             $this->theme['paginationButtonText']
@@ -75,13 +73,12 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
 
                     {{-- Next Page Link --}}
                     @if ($paginator->hasMorePages())
-                        <button wire:click.prevent="nextPage" rel="next"
-                        @class([
+                        <button wire:click.prevent="nextPage" rel="next" @class([
                             'relative inline-flex items-center justify-center w-10 h-10 text-sm rounded-full shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-110 hover:-translate-y-1',
                             $this->theme['paginationButtonBg'],
                             $this->theme['paginationButtonText']
                         ])>
-                            <x-icon name="heroicon-s-chevron-right" class="w-5 h-5" />
+                            <x-tablenice-icon name="heroicon-s-chevron-right" class="w-5 h-5" />
                         </button>
                     @else
                         <span @class([
@@ -89,7 +86,7 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
                             $this->theme['paginationDisabledButtonBg'],
                             $this->theme['paginationDisabledButtonText']
                         ])>
-                            <x-icon name="heroicon-s-chevron-right" class="w-5 h-5" />
+                            <x-tablenice-icon name="heroicon-s-chevron-right" class="w-5 h-5" />
                         </span>
                     @endif
                 </div>
@@ -97,4 +94,3 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
         </nav>
     @endif
 </div>
-

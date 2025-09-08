@@ -3,21 +3,27 @@
 namespace Mystamyst\TableNice\View\Components;
 
 use Illuminate\View\Component;
-use Illuminate\Support\Facades\Blade;
 
 class Icon extends Component
 {
-    public string $name;
-
-    public function __construct(string $name)
+    /**
+     * Create a new component instance.
+     *
+     * @param string $name The name of the icon to render (e.g., 'heroicon-s-cog-6-tooth').
+     */
+    public function __construct(public string $name)
     {
-        $this->name = $name;
     }
 
+    /**
+     * Get the view / contents that represent the component.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function render()
     {
-        // This renders the SVG icon directly using the blade-ui-kit's functionality.
-        // It avoids conflicts with the host application's <x-icon> component.
-        return Blade::render('<svg {{ $attributes }} >@svg("'.$this->name.'")</svg>');
+        // This correctly points to the Blade view where the attributes will be available.
+        return view('tablenice::components.icon');
     }
 }
+

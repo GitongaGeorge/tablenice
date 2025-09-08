@@ -44,10 +44,10 @@ class TableNiceServiceProvider extends ServiceProvider
             __DIR__.'/../resources/views' => resource_path('views/vendor/tablenice'),
         ], 'tablenice-views');
         
-        // Register the custom icon component with a unique prefix
+        // Register the package's own icon component to avoid conflicts.
         Blade::component('tablenice-icon', TableNiceIcon::class);
 
-        // Register Livewire components with a prefix
+        // Register Livewire components with a unique prefix.
         Livewire::component('tablenice-datatable', DatatableComponent::class);
         Livewire::component('tablenice-action-form', ActionForm::class);
         Livewire::component('tablenice-alert', Alert::class);

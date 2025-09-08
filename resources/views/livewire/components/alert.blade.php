@@ -28,16 +28,16 @@
                 <div class="flex-shrink-0">
                     @switch($type)
                         @case('success')
-                            <x-icon name="heroicon-o-check-circle" @class(['w-6 h-6', $this->styles()['icon']]) />
+                            <x-tablenice-icon name="heroicon-o-check-circle" @class(['w-6 h-6', $this->styles()['icon']]) />
                             @break
                         @case('error')
-                            <x-icon name="heroicon-o-x-circle" @class(['w-6 h-6', $this->styles()['icon']]) />
+                            <x-tablenice-icon name="heroicon-o-x-circle" @class(['w-6 h-6', $this->styles()['icon']]) />
                             @break
                         @case('warning')
-                            <x-icon name="heroicon-o-exclamation-triangle" @class(['w-6 h-6', $this->styles()['icon']]) />
+                            <x-tablenice-icon name="heroicon-o-exclamation-triangle" @class(['w-6 h-6', $this->styles()['icon']]) />
                             @break
                         @default
-                            <x-icon name="heroicon-o-information-circle" @class(['w-6 h-6', $this->styles()['icon']]) />
+                            <x-tablenice-icon name="heroicon-o-information-circle" @class(['w-6 h-6', $this->styles()['icon']]) />
                     @endswitch
                 </div>
                 <div class="flex-1 w-0 pt-0.5 ml-3">
@@ -48,7 +48,7 @@
                 <div class="flex flex-shrink-0 ml-4">
                     <button @click="show = false" type="button" class="inline-flex rounded-md text-white/70 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-gray-800">
                         <span class="sr-only">Close</span>
-                        <x-icon name="heroicon-s-x-mark" class="w-5 h-5" />
+                        <x-tablenice-icon name="heroicon-s-x-mark" class="w-5 h-5" />
                     </button>
                 </div>
             </div>
