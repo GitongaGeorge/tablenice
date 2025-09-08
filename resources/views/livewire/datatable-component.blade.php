@@ -780,7 +780,7 @@
                         $this->theme['tableContainer'],
                     ])>
                     @if ($items && !$groupedItems)
-                        {{ $items->links(config('tablenice.pagination.view', 'tablenice::livewire.pagination.alpha')) }}
+                        {{ $items->links(config('tablenice.pagination.view', 'tablenice::livewire.pagination.tablenice')) }}
                     @elseif($groupedItems)
                         {{ $this->paginatedItems()->links(config('tablenice.pagination.view', 'tablenice::livewire.pagination.tablenice')) }}
                     @endif
