@@ -2,7 +2,7 @@
 
 namespace Mystamyst\TableNice\Actions;
 
-use Mystamyst\TableNice\Enums\Icons\IconPosition;
+use Mystamyst\TableNice\Enums\IconPosition;
 use Mystamyst\TableNice\Forms\Form;
 use Mystamyst\TableNice\Enums\Icons\CarbonIconsIcon;
 use Mystamyst\TableNice\Enums\Color;

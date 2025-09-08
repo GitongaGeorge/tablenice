@@ -264,13 +264,13 @@
                                             $this->theme['buttonBg'] => !$action->getColor(),
                                             $this->theme['buttonBgHover'] => !$action->getColor(),
                                         ])>
-                                        @if ($action->getIcon() && $action->getIconPosition() === \Mystamyst\TableNice\Enums\Icons\IconPosition::PREFIX)
+                                        @if ($action->getIcon() && $action->getIconPosition() === \Mystamyst\TableNice\Enums\IconPosition::PREFIX)
                                             {!! $action->getIconHtml() !!}
                                         @endif
                                         @if (!$action->isIconOnly())
                                             <span>{{ $action->getLabel() }}</span>
                                         @endif
-                                        @if ($action->getIcon() && $action->getIconPosition() === \Mystamyst\TableNice\Enums\Icons\IconPosition::SUFFIX)
+                                        @if ($action->getIcon() && $action->getIconPosition() === \Mystamyst\TableNice\Enums\IconPosition::SUFFIX)
                                             {!! $action->getIconHtml() !!}
                                         @endif
                                     </button>
@@ -295,13 +295,13 @@
                         $this->theme['buttonBgHover'] => !$action->getColor(),
                         $this->theme['ring'],
                     ])>
-                        @if ($action->getIcon() && $action->getIconPosition() === \Mystamyst\TableNice\Enums\Icons\IconPosition::PREFIX)
+                        @if ($action->getIcon() && $action->getIconPosition() === \Mystamyst\TableNice\Enums\IconPosition::PREFIX)
                             {!! $action->getIconHtml() !!}
                         @endif
                         @if (!$action->isIconOnly())
                             <span>{{ $action->getLabel() }}</span>
                         @endif
-                        @if ($action->getIcon() && $action->getIconPosition() === \Mystamyst\TableNice\Enums\Icons\IconPosition::SUFFIX)
+                        @if ($action->getIcon() && $action->getIconPosition() === \Mystamyst\TableNice\Enums\IconPosition::SUFFIX)
                             {!! $action->getIconHtml() !!}
                         @endif
                     </button>
@@ -482,13 +482,13 @@
                                                                     $this->theme['rowHover'] => !$action->getDisplayType(),
                                                                     $this->theme['ring'],
                                                                 ])>
-                                                                @if ($action->getIcon() && $action->getIconPosition() === \Mystamyst\TableNice\Enums\Icons\IconPosition::PREFIX)
+                                                                @if ($action->getIcon() && $action->getIconPosition() === \Mystamyst\TableNice\Enums\IconPosition::PREFIX)
                                                                     {!! $action->getIconHtml() !!}
                                                                 @endif
                                                                 @if (!$action->isIconOnly())
                                                                     <span>{{ $action->getLabel() }}</span>
                                                                 @endif
-                                                                @if ($action->getIcon() && $action->getIconPosition() === \Mystamyst\TableNice\Enums\Icons\IconPosition::SUFFIX)
+                                                                @if ($action->getIcon() && $action->getIconPosition() === \Mystamyst\TableNice\Enums\IconPosition::SUFFIX)
                                                                     {!! $action->getIconHtml() !!}
                                                                 @endif
                                                             </button>
@@ -660,13 +660,13 @@
                                                                 $this->theme['rowHover'] => !$action->getDisplayType(),
                                                                 $this->theme['ring'],
                                                             ])>
-                                                            @if ($action->getIcon() && $action->getIconPosition() === \Mystamyst\TableNice\Enums\Icons\IconPosition::PREFIX)
+                                                            @if ($action->getIcon() && $action->getIconPosition() === \Mystamyst\TableNice\Enums\IconPosition::PREFIX)
                                                                 {!! $action->getIconHtml() !!}
                                                             @endif
                                                             @if (!$action->isIconOnly())
                                                                 <span>{{ $action->getLabel() }}</span>
                                                             @endif
-                                                            @if ($action->getIcon() && $action->getIconPosition() === \Mystamyst\TableNice\Enums\Icons\IconPosition::SUFFIX)
+                                                            @if ($action->getIcon() && $action->getIconPosition() === \Mystamyst\TableNice\Enums\IconPosition::SUFFIX)
                                                                 {!! $action->getIconHtml() !!}
                                                             @endif
                                                         </button>
