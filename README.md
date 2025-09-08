@@ -4,25 +4,17 @@ TableNice is a powerful, themeable, and highly configurable datatable and form s
 
 ## Features
 
-🚀 **Fluent & Declarative API**: Define your tables and forms entirely in PHP using expressive, chainable methods.
-
-🎨 **Powerful Theming Engine**: Choose from multiple pre-built color themes or create your own. A single line of code changes the entire look and feel.
-
-🎛️ **Rich Column Types**: Includes Text, Number, DateTime, Image, Icon, and Relation columns out of the box, each with specialized formatters and options.
-
-⚡ **Interactive Actions**: Create row, page, and bulk actions with built-in support for forms in modals and confirmation dialogs.
-
-📈 **Data Visualization**: Display summary cards with dynamically generated charts (bar, line, pie, doughnut) to provide key insights at a glance.
-
-**Advanced Table Features**: Includes global searching, per-column filtering, sorting, grouping, summary rows, and customizable pagination.
-
-🤖 **Code Generation**: Comes with a `make:datatable` command to instantly scaffold your tables and a `tablenice:install` command to get set up quickly.
-
-🛡️ **Type-Safe by Design**: Leverages modern PHP Enums for icons and colors, providing autocompletion and preventing common errors.
-
-🧩 **Component-Based**: Built with a clean separation of concerns using Livewire and Blade components for maximum flexibility and reusability.
-
-📱 **Fully Responsive**: Designed with a mobile-first approach to ensure a seamless experience on any device.
+- 🚀 **Fluent & Declarative API**: Define your tables and forms entirely in PHP using expressive, chainable methods.
+- 🎨 **Powerful Theming Engine**: Choose from multiple pre-built color themes or create your own. A single line of code changes the entire look and feel.
+- **DataSource Agnostic**: Works seamlessly with Eloquent models, custom queries, and even API-driven collections.
+- 🎛️ **Rich Column Types**: Includes Text, Number, DateTime, Image, Icon, and Relation columns out of the box, each with specialized formatters and options.
+- ⚡ **Interactive Actions**: Create row, page, and bulk actions with built-in support for forms in modals and confirmation dialogs.
+- 📈 **Data Visualization**: Display summary cards with dynamically generated charts (bar, line, pie, doughnut) to provide key insights at a glance.
+- **Advanced Table Features**: Includes global searching, per-column filtering, sorting, grouping, summary rows, and customizable pagination.
+- 🤖 **Code Generation**: Comes with a `make:datatable` command to instantly scaffold your tables and a `tablenice:install` command to get set up quickly.
+- 🛡️ **Type-Safe by Design**: Leverages modern PHP Enums for icons and colors, providing autocompletion and preventing common errors.
+- 🧩 **Component-Based**: Built with a clean separation of concerns using Livewire and Blade components for maximum flexibility and reusability.
+- 📱 **Fully Responsive**: Designed with a mobile-first approach to ensure a seamless experience on any device.
 
 ## Installation & Setup
 
@@ -43,14 +35,13 @@ php artisan tablenice:install
 ```
 
 This command will:
-
 - Publish the `tablenice.php` configuration file to your `config/` directory.
-- Publish the Blade views to `resources/views/vendor/tablenice/`, allowing you to customize them if needed.
+- Publish a `DatatablePage.php` Livewire component and its corresponding view. These are required to use the `--route` option in the `make:datatable` command.
 - Provide you with clear, copy-pasteable instructions for the final manual steps.
 
 ### 3. Frontend Dependencies
 
-The interactive elements of TableNice, like charts, calendars, and the rich text editor, require a few frontend packages. Install them via npm:
+The interactive elements of TableNice, like charts, calendars, and the rich text editor, require a few frontend packages. The install command will remind you to install these via npm:
 
 ```bash
 npm install chart.js dayjs litepicker trix
@@ -94,32 +85,19 @@ For modals and alerts to work correctly across your entire application, you must
 Use the `make:datatable` command to generate a Table and its corresponding Form class.
 
 ```bash
-php artisan make:datatable UserTable --model=User
+php artisan make:datatable UserTable --model=User --route
 ```
 
 #### Available Command Options
 
 - `--model=User`: (Required) The Eloquent model to use for the table. The command will inspect this model to pre-fill columns and form fields.
 - `--theme=indigo`: Specifies a color theme for the generated table class. Defaults to blue.
-- `--route`: Automatically adds a full-page route for this datatable in `routes/web.php`.
+- `--route`: Automatically adds a full-page route for this datatable in `routes/web.php` using the published DatatablePage component.
 - `--force`: Overwrites existing Table and Form files if they already exist.
 
-### 2. Create a Route
+### 2. Customize Your Table
 
-If you didn't use the `--route` option during creation, you can add a route manually in `routes/web.php`:
-
-```php
-// routes/web.php
-use App\DataTables\UserTable;
-use Mystamyst\TableNice\Livewire\DatatableComponent;
-
-// Create a full-page Livewire component route
-Route::get('/users', DatatableComponent::class)->with('tableClass', UserTable::class);
-```
-
-### 3. Customize Your Table
-
-Open `app/DataTables/UserTable.php` to configure your columns, actions, and theme. The generator provides a great starting point.
+Open `app/DataTables/UserTable.php` to configure your columns, actions, and theme.
 
 ```php
 <?php
@@ -127,14 +105,9 @@ Open `app/DataTables/UserTable.php` to configure your columns, actions, and them
 namespace App\DataTables;
 
 use Mystamyst\TableNice\Actions\CreateAction;
-use Mystamyst\TableNice\Actions\DeleteAction;
-use Mystamyst\TableNice\Actions\EditAction;
-use Mystamyst\TableNice\Columns\DateTimeColumn;
-use Mystamyst\TableNice\Columns\TextColumn;
-use Mystamyst\TableNice\Enums\Theme;
 use Mystamyst\TableNice\Table;
 use App\Models\User;
-use App\DataTables\Forms\UserTableForm;
+// ... other imports
 
 class UserTable extends Table
 {
@@ -147,40 +120,49 @@ class UserTable extends Table
                 ->sortable()
                 ->searchable(),
 
-            TextColumn::make('email')
-                ->searchable(),
-
-            DateTimeColumn::make('created_at')
-                ->label('Joined On')
-                ->since() // e.g., "2 days ago"
-                ->sortable(),
+            // ... more columns
         ];
     }
     
-    public function theme(): Theme
-    {
-        return Theme::INDIGO; // Change the theme here
-    }
-
-    public function pageActions(): array
-    {
-        return [
-            CreateAction::make()
-                ->form(UserTableForm::class),
-        ];
-    }
-
-    public function actions(): array
-    {
-        return [
-            EditAction::make()
-                ->form(UserTableForm::class),
-            
-            DeleteAction::make()
-                ->requiresConfirmation(),
-        ];
-    }
+    // ... actions, cards, etc.
 }
 ```
 
-That's it! Visit your `/users` route to see your new datatable.
+### 3. Advanced Usage: Custom Query
+
+You can easily modify the base query for your datatable by overriding the `query()` method in your Table class. This is perfect for adding complex joins or default scopes.
+
+```php
+use Illuminate\Contracts\Database\Eloquent\Builder;
+
+public function query(): Builder
+{
+    // Start with the base model query and add your own logic
+    return parent::query()
+        ->with('posts')
+        ->where('active', true);
+}
+```
+
+### 4. Advanced Usage: API / Collection Data Source
+
+TableNice is not limited to Eloquent models. You can source your data from anywhere by overriding the `data()` method. If this method returns a Collection, it will be used instead of the `query()` method.
+
+```php
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Http;
+
+public function data(): ?Collection
+{
+    // Example: Fetching data from an external API
+    $response = Http::get('https://api.example.com/users');
+    
+    // Ensure each item has a unique 'id' for actions to work
+    return collect($response->json('data'));
+}
+
+// You no longer need the $model property
+// public ?string $model = null; 
+```
+
+That's it! Visit your newly created route to see your datatable.
