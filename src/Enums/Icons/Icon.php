@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums;
+namespace Mystamyst\TableNice\Enums\Icons;
 
 interface Icon
 {
