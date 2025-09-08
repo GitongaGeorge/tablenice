@@ -2,10 +2,10 @@
 
 namespace Mystamyst\TableNice\Actions;
 
-use Mystamyst\TableNice\Enums\IconPosition;
+use Mystamyst\TableNice\Enums\Icons\IconPosition;
 use Mystamyst\TableNice\Forms\Form;
 use Mystamyst\TableNice\Enums\Icons\CarbonIconsIcon;
-use Mystamyst\TableNice\Enums\Color; // ** USE the new Color enum **
+use Mystamyst\TableNice\Enums\Color;
 use Mystamyst\TableNice\Enums\Icons\HeroiconsIcon;
 use Mystamyst\TableNice\Enums\Icons\IconparkIcon;
 use Mystamyst\TableNice\Enums\Icons\PhosphorIconsIcon;
@@ -19,7 +19,7 @@ abstract class Action
     protected ?string $label = null;
     protected $icon = null;
     protected ?IconPosition $iconPosition = IconPosition::PREFIX;
-    protected ?Color $color = null; // ** MODIFIED: Use Color enum type **
+    protected ?Color $color = null;
     protected ?string $textColor = null;
     protected ?string $displayType = null;
     protected ?string $form = null;
@@ -264,7 +264,8 @@ abstract class Action
     /**
      * Generates button classes based on display type and color.
      */
-    public function getButtonClasses(string $defaultDisplayType = null): string
+    // CORRECTED: Parameter `$defaultDisplayType` is now explicitly nullable.
+    public function getButtonClasses(?string $defaultDisplayType = null): string
     {
         $color = $this->getColor();
 
@@ -320,4 +321,3 @@ abstract class Action
 
     abstract public function runOnModel(Model $model, array $data = []);
 }
-

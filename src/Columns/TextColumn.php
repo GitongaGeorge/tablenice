@@ -2,9 +2,9 @@
 
 namespace Mystamyst\TableNice\Columns;
 
-use Mystamyst\TableNice\Enums\IconPosition;
+use Mystamyst\TableNice\Enums\Icons\IconPosition;
 use Mystamyst\TableNice\Enums\Icons\CarbonIconsIcon;
-use Mystamyst\TableNice\Enums\Color; // Use Color enum
+use Mystamyst\TableNice\Enums\Color;
 use Mystamyst\TableNice\Enums\Icons\HeroiconsIcon;
 use Mystamyst\TableNice\Enums\Icons\IconparkIcon;
 use Mystamyst\TableNice\Enums\Icons\PhosphorIconsIcon;
@@ -51,14 +51,14 @@ class TextColumn extends Column
         return $this->format(fn ($value) => Str::title($value));
     }
 
-    public function badge(Color|callable $color = null): self
+    // CORRECTED: Parameter `$color` is now explicitly nullable.
+    public function badge(?Color $color = null): self
     {
         $this->isBadge = true;
         $this->badgeColor($color ?? Color::GRAY);
         return $this;
     }
-    
-    // ** MODIFIED: Accepts Color enum **
+
     public function badgeColor(Color|callable $callback): self
     {
         $this->badgeColorCallback = $callback;
@@ -83,8 +83,7 @@ class TextColumn extends Column
         $this->iconPosition = $position;
         return $this;
     }
-    
-    // ** MODIFIED: Accepts Color enum **
+
     public function iconColor(Color|callable $color): self
     {
         $this->iconColor = $color;
@@ -97,7 +96,6 @@ class TextColumn extends Column
         return $this;
     }
 
-    // ** MODIFIED: Accepts Color enum **
     public function textColor(Color|callable $color): self
     {
         $this->textColor = $color;
