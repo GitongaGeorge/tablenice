@@ -77,15 +77,15 @@
                 {{-- Search Input --}}
                 <div class="relative w-full lg:max-w-md">
                     <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none z-10">
-                        <svg @class(['w-5 h-5', $this->theme['text']]) xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                            fill="currentColor" aria-hidden="true">
+                        <svg @class(['w-5 h-5', $this->theme['text']]) xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd"
                                 d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
                                 clip-rule="evenodd" />
                         </svg>
                     </div>
-                    <input wire:model.live.debounce.300ms="search" type="text" placeholder="{{ config('tablenice.search_placeholder', 'Search Records...') }}"
-                        @class([
+                    <input wire:model.live.debounce.300ms="search" type="text"
+                        placeholder="{{ config('tablenice.search_placeholder', 'Search Records...') }}" @class([
                             'w-full py-3 pl-12 pr-4 text-sm transition-all duration-200 border-0 shadow-lg rounded-xl focus:ring-2 dark:text-slate-200',
                             $this->theme['inputBg'],
                             $this->theme['ring'],
@@ -105,7 +105,7 @@
                                 'px-4 py-3 flex items-center gap-2' => $this->table->showFiltersButtonLabel(),
                                 $this->theme['controlButtonBg'],
                             ])>
-                                <x-icon name="heroicon-s-adjustments-horizontal" @class(['w-5 h-5 transition-colors', $this->theme['text']]) />
+                                <x-tablenice-icon name="heroicon-s-adjustments-horizontal" @class(['w-5 h-5 transition-colors', $this->theme['text']]) />
                                 @if ($this->table->showFiltersButtonLabel())
                                     <span @class(['text-sm font-semibold', $this->theme['text']])>Filters</span>
                                 @endif
@@ -117,8 +117,8 @@
                             ])
                                 style="display: none;">
                                 <div class="p-6 space-y-6">
-                                     {{-- Clear Filters Button --}}
-                                     @if ($this->hasActiveFilters)
+                                    {{-- Clear Filters Button --}}
+                                    @if ($this->hasActiveFilters)
                                         <button wire:click.prevent="clearFilters" @class([
                                             'text-sm font-medium hover:underline w-full text-left',
                                             $this->theme['text'],
@@ -146,7 +146,7 @@
                                                 </select>
                                                 <div
                                                     class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
-                                                    <x-icon name="heroicon-s-chevron-up-down" class="w-4 h-4" />
+                                                    <x-tablenice-icon name="heroicon-s-chevron-up-down" class="w-4 h-4" />
                                                 </div>
                                             </div>
                                         </div>
@@ -157,12 +157,11 @@
                                                 <label
                                                     class="block mb-3 text-sm font-semibold text-blue-900 dark:text-blue-200">{{ $column->getLabel() }}</label>
                                                 <div class="relative">
-                                                    <select wire:model.live="filters.{{ $column->getName() }}"
-                                                        @class([
-                                                            'w-full pl-4 pr-10 py-3 text-sm text-slate-800 border-0 rounded-xl transition-all duration-200 focus:ring-2 dark:text-slate-200 appearance-none',
-                                                            $this->theme['selectBg'],
-                                                            $this->theme['ring'],
-                                                        ])>
+                                                    <select wire:model.live="filters.{{ $column->getName() }}" @class([
+                                                        'w-full pl-4 pr-10 py-3 text-sm text-slate-800 border-0 rounded-xl transition-all duration-200 focus:ring-2 dark:text-slate-200 appearance-none',
+                                                        $this->theme['selectBg'],
+                                                        $this->theme['ring'],
+                                                    ])>
                                                         <option value="">All</option>
                                                         @foreach ($column->getFilterOptions() as $value => $label)
                                                             <option value="{{ $value }}">{{ $label }}
@@ -171,7 +170,7 @@
                                                     </select>
                                                     <div
                                                         class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
-                                                        <x-icon name="heroicon-s-chevron-up-down" class="w-4 h-4" />
+                                                        <x-tablenice-icon name="heroicon-s-chevron-up-down" class="w-4 h-4" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -189,7 +188,7 @@
                             'px-4 py-3 flex items-center gap-2' => $this->table->showSettingsButtonLabel(),
                             $this->theme['controlButtonBg'],
                         ])>
-                            <x-icon name="heroicon-s-cog-6-tooth" @class(['w-5 h-5 transition-colors', $this->theme['text']]) />
+                            <x-tablenice-icon name="heroicon-s-cog-6-tooth" @class(['w-5 h-5 transition-colors', $this->theme['text']]) />
                             @if ($this->table->showSettingsButtonLabel())
                                 <span @class(['text-sm font-semibold', $this->theme['text']])>Settings</span>
                             @endif
@@ -198,8 +197,7 @@
                             'absolute right-0 z-50 w-64 mt-2 origin-top-right shadow-2xl rounded-2xl backdrop-blur-xl ring-1',
                             $this->theme['tbody'],
                             $this->theme['pagination'],
-                        ])
-                            style="display: none;">
+                        ]) style="display: none;">
                             <div class="p-6 space-y-6">
                                 <div>
                                     <label
@@ -217,7 +215,7 @@
                                         </select>
                                         <div
                                             class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
-                                            <x-icon name="heroicon-s-chevron-up-down" class="w-4 h-4" />
+                                            <x-tablenice-icon name="heroicon-s-chevron-up-down" class="w-4 h-4" />
                                         </div>
                                     </div>
                                 </div>
@@ -225,8 +223,7 @@
                                     <label class="flex items-center justify-between">
                                         <span class="text-sm font-semibold text-blue-900 dark:text-blue-200">Sticky
                                             Header</span>
-                                        <input type="checkbox" wire:model.live="stickyHeader"
-                                            @class(['w-4 h-4 border-gray-300 rounded', $this->theme['checkbox']])>
+                                        <input type="checkbox" wire:model.live="stickyHeader" @class(['w-4 h-4 border-gray-300 rounded', $this->theme['checkbox']])>
                                     </label>
                                 </div>
                             </div>
@@ -237,16 +234,15 @@
 
             {{-- Right Side: Page Actions and Bulk Actions --}}
             <div class="flex items-center flex-shrink-0 gap-3">
-                 {{-- Bulk Actions --}}
-                 <div x-show="$wire.selectedRows.length > 0" style="display: none;"
-                    class="flex flex-col items-start">
+                {{-- Bulk Actions --}}
+                <div x-show="$wire.selectedRows.length > 0" style="display: none;" class="flex flex-col items-start">
                     <div x-data="{ open: false }" class="relative inline-block">
                         <button @click="open = !open" @class([
                             'inline-flex items-center gap-2 px-3 py-3 text-sm font-semibold text-white transition-all duration-200 rounded-xl shadow-lg hover:shadow-xl',
                             $this->theme['buttonBg'],
                             $this->theme['buttonBgHover'],
                         ])>
-                            <x-icon name="heroicon-s-bars-3" class="w-5 h-5" />
+                            <x-tablenice-icon name="heroicon-s-bars-3" class="w-5 h-5" />
                             <span>Bulk Actions ({{ count($selectedRows) }})</span>
                         </button>
                         <div x-show="open" @click.away="open = false" x-transition @class([
@@ -289,17 +285,16 @@
                 </div>
 
                 @foreach ($this->table->pageActions() as $action)
-                    <button wire:click="handleAction('{{ $action->getName() }}')" type="button"
-                        @class([
-                            'inline-flex items-center transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg shadow-lg hover:shadow-xl',
-                            'p-3' => $action->isIconOnly(),
-                            'gap-2 px-3 py-2.5 text-sm font-semibold' => !$action->isIconOnly(),
-                            $action->getButtonClasses('button'),
-                            'text-white' => !$action->getColor(),
-                            $this->theme['buttonBg'] => !$action->getColor(),
-                            $this->theme['buttonBgHover'] => !$action->getColor(),
-                            $this->theme['ring'],
-                        ])>
+                    <button wire:click="handleAction('{{ $action->getName() }}')" type="button" @class([
+                        'inline-flex items-center transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg shadow-lg hover:shadow-xl',
+                        'p-3' => $action->isIconOnly(),
+                        'gap-2 px-3 py-2.5 text-sm font-semibold' => !$action->isIconOnly(),
+                        $action->getButtonClasses('button'),
+                        'text-white' => !$action->getColor(),
+                        $this->theme['buttonBg'] => !$action->getColor(),
+                        $this->theme['buttonBgHover'] => !$action->getColor(),
+                        $this->theme['ring'],
+                    ])>
                         @if ($action->getIcon() && $action->getIconPosition() === \Mystamyst\TableNice\Enums\Icons\IconPosition::PREFIX)
                             {!! $action->getIconHtml() !!}
                         @endif
@@ -329,46 +324,46 @@
                             <th scope="col" @class([
                                 'sticky left-0 z-30 px-6 py-4',
                                 $this->theme['headerBgSolid'],
-                            ]) style="width: 60px;">
+                            ])
+                                style="width: 60px;">
                                 <input type="checkbox" wire:model.live="selectAll" @class([
                                     'w-5 h-5 border-gray-300 rounded dark:bg-slate-700 dark:border-slate-600',
                                     $this->theme['checkbox'],
                                 ])>
                             </th>
                             @foreach ($this->columnsForView as $column)
-                                <th scope="col" @class([
-                                    'px-6 py-4 text-xs font-semibold tracking-wider text-left text-white uppercase',
-                                    'sticky z-20' => $column->isSticky(),
-                                    $this->theme['headerBgSolid'] => $column->isSticky(),
-                                ])
-                                    @php
-                                        $styles = [];
-                                        if ($column->isSticky()) $styles[] = "left: {$column->stickyOffset}px";
-                                        if ($column->getWidth()) $styles[] = "min-width: {$column->getWidth()}";
-                                    @endphp
-                                    @if (!empty($styles)) style="{{ implode('; ', $styles) }}" @endif
-                                >
-                                    @if ($column->isSortable())
-                                        <button wire:click="sortBy('{{ $column->getName() }}')"
-                                            class="flex items-center gap-2 transition-colors duration-200 group hover:text-blue-100">
-                                            <span>{{ $column->getLabel() }}</span>
-                                            <span class="flex-none w-4 h-4">
-                                                @if ($sortField === $column->getName())
-                                                    @if ($sortDirection === 'asc')
-                                                        <x-icon name="heroicon-s-chevron-up" class="w-4 h-4" />
-                                                    @else
-                                                        <x-icon name="heroicon-s-chevron-down" class="w-4 h-4" />
-                                                    @endif
-                                                @else
-                                                    <x-icon name="heroicon-s-chevron-up-down"
-                                                        class="w-4 h-4 opacity-50" />
-                                                @endif
-                                            </span>
-                                        </button>
-                                    @else
-                                        <span>{{ $column->getLabel() }}</span>
-                                    @endif
-                                </th>
+                                                        <th scope="col" @class([
+                                                            'px-6 py-4 text-xs font-semibold tracking-wider text-left text-white uppercase',
+                                                            'sticky z-20' => $column->isSticky(),
+                                                            $this->theme['headerBgSolid'] => $column->isSticky(),
+                                                        ]) @php
+                                    $styles = [];
+                                    if ($column->isSticky())
+                                        $styles[] = "left: {$column->stickyOffset}px";
+                                    if ($column->getWidth())
+                                        $styles[] = "min-width: {$column->getWidth()}";
+                                @endphp @if (!empty($styles)) style="{{ implode('; ', $styles) }}" @endif>
+                                                            @if ($column->isSortable())
+                                                                <button wire:click="sortBy('{{ $column->getName() }}')"
+                                                                    class="flex items-center gap-2 transition-colors duration-200 group hover:text-blue-100">
+                                                                    <span>{{ $column->getLabel() }}</span>
+                                                                    <span class="flex-none w-4 h-4">
+                                                                        @if ($sortField === $column->getName())
+                                                                            @if ($sortDirection === 'asc')
+                                                                                <x-tablenice-icon name="heroicon-s-chevron-up" class="w-4 h-4" />
+                                                                            @else
+                                                                                <x-tablenice-icon name="heroicon-s-chevron-down" class="w-4 h-4" />
+                                                                            @endif
+                                                                        @else
+                                                                            <x-tablenice-icon name="heroicon-s-chevron-up-down"
+                                                                                class="w-4 h-4 opacity-50" />
+                                                                        @endif
+                                                                    </span>
+                                                                </button>
+                                                            @else
+                                                                <span>{{ $column->getLabel() }}</span>
+                                                            @endif
+                                                        </th>
                             @endforeach
                             <th scope="col" @class([
                                 'sticky right-0 z-30 px-2 py-3',
@@ -377,9 +372,10 @@
                                 <div class="flex items-center justify-center">
                                     <button @click="actionsColumn.toggle()"
                                         class="p-2 hidden md:flex text-white rounded-full hover:bg-white/10">
-                                        <span x-show="actionsColumn.isCollapsed"><x-icon
+                                        <span x-show="actionsColumn.isCollapsed"><x-tablenice-icon
                                                 name="heroicon-o-arrows-pointing-out" class="w-5 h-5" /></span>
-                                        <span x-show="!actionsColumn.isCollapsed" style="display: none;"><x-icon
+                                        <span x-show="!actionsColumn.isCollapsed"
+                                            style="display: none;"><x-tablenice-icon
                                                 name="heroicon-o-arrows-pointing-in" class="w-5 h-5" /></span>
                                     </button>
                                 </div>
@@ -418,10 +414,10 @@
                                 $activeGroupData = $this->activeGroupData();
                                 $hasSummaryAtTop = collect($this->columnsForView)->some(
                                     fn($c) => $c->hasSummary() &&
-                                        in_array($c->getSummary()['location'], [
-                                            \Mystamyst\TableNice\Enums\SummaryLocation::TOP,
-                                            \Mystamyst\TableNice\Enums\SummaryLocation::BOTH,
-                                        ]),
+                                    in_array($c->getSummary()['location'], [
+                                        \Mystamyst\TableNice\Enums\SummaryLocation::TOP,
+                                        \Mystamyst\TableNice\Enums\SummaryLocation::BOTH,
+                                    ]),
                                 );
                             @endphp
 
@@ -502,7 +498,7 @@
                                                 <div x-data="{ open: false }" class="relative md:hidden">
                                                     <button @click="open = !open"
                                                         class="p-2 -m-2 text-gray-500 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700">
-                                                        <x-icon name="heroicon-s-ellipsis-vertical" class="w-5 h-5" />
+                                                        <x-tablenice-icon name="heroicon-s-ellipsis-vertical" class="w-5 h-5" />
                                                     </button>
                                                     <div x-show="open" @click.away="open = false" x-transition
                                                         class="absolute right-0 z-30 w-48 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-slate-800 dark:ring-slate-700"
@@ -527,20 +523,17 @@
 
                                     @if ($groupItems->count() > $perGroup)
                                         <tr>
-                                            <td colspan="{{ count($this->columnsForView) + 2 }}"
-                                                class="px-6 py-4 text-center">
-                                                <button wire:click="toggleGroup('{{ $groupName }}')"
-                                                    @class([
-                                                        'inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition-all duration-200 rounded-lg shadow-lg hover:shadow-xl',
-                                                        $this->theme['buttonBg'],
-                                                        $this->theme['buttonBgHover'],
-                                                    ])>
+                                            <td colspan="{{ count($this->columnsForView) + 2 }}" class="px-6 py-4 text-center">
+                                                <button wire:click="toggleGroup('{{ $groupName }}')" @class([
+                                                    'inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition-all duration-200 rounded-lg shadow-lg hover:shadow-xl',
+                                                    $this->theme['buttonBg'],
+                                                    $this->theme['buttonBgHover'],
+                                                ])>
                                                     {{ $isExpanded ? 'Show Less' : 'Show ' . ($groupItems->count() - $perGroup) . ' More' }}
-                                                    <x-icon name="heroicon-s-chevron-down"
-                                                        @class([
-                                                            'w-4 h-4 transition-transform duration-200',
-                                                            'rotate-180' => $isExpanded,
-                                                        ]) />
+                                                    <x-tablenice-icon name="heroicon-s-chevron-down" @class([
+                                                        'w-4 h-4 transition-transform duration-200',
+                                                        'rotate-180' => $isExpanded,
+                                                    ]) />
                                                 </button>
                                             </td>
                                         </tr>
@@ -548,30 +541,32 @@
 
                                     @if ($hasSummaryAtTop)
                                         <tr @class(['font-semibold', $this->theme['summaryRowBg']])>
-                                            <td @class(['sticky left-0 z-10', $this->theme['stickyCellBg']]) style="min-width: 60px;"></td>
+                                            <td @class(['sticky left-0 z-10', $this->theme['stickyCellBg']])
+                                                style="min-width: 60px;"></td>
                                             @foreach ($this->columnsForView as $column)
-                                                <td @class([
-                                                    'px-6 py-3 text-sm',
-                                                    $this->theme['summaryRowText'],
-                                                    $column->getAlignmentClass(),
-                                                    'sticky z-10' => $column->isSticky(),
-                                                    $this->theme['stickyCellBg'] => $column->isSticky(),
-                                                ])
-                                                    @php
-                                                        $styles = [];
-                                                        if ($column->isSticky()) $styles[] = "left: {$column->stickyOffset}px";
-                                                        if ($column->getWidth()) $styles[] = "min-width: {$column->getWidth()}";
-                                                    @endphp
-                                                    @if (!empty($styles)) style="{{ implode('; ', $styles) }}" @endif>
-                                                    @if (
-                                                        $column->hasSummary() &&
-                                                            in_array($column->getSummary()['location'], [
-                                                                \Mystamyst\TableNice\Enums\SummaryLocation::TOP,
-                                                                \Mystamyst\TableNice\Enums\SummaryLocation::BOTH,
-                                                            ]))
-                                                        {{ $this->summaries['groups'][$groupName][$column->getName()] ?? '' }}
-                                                    @endif
-                                                </td>
+                                                                <td @class([
+                                                                    'px-6 py-3 text-sm',
+                                                                    $this->theme['summaryRowText'],
+                                                                    $column->getAlignmentClass(),
+                                                                    'sticky z-10' => $column->isSticky(),
+                                                                    $this->theme['stickyCellBg'] => $column->isSticky(),
+                                                                ]) @php
+                                                    $styles = [];
+                                                    if ($column->isSticky())
+                                                        $styles[] = "left: {$column->stickyOffset}px";
+                                                    if ($column->getWidth())
+                                                        $styles[] = "min-width: {$column->getWidth()}";
+                                                @endphp @if (!empty($styles)) style="{{ implode('; ', $styles) }}" @endif>
+                                                                    @if (
+                                                                            $column->hasSummary() &&
+                                                                            in_array($column->getSummary()['location'], [
+                                                                                \Mystamyst\TableNice\Enums\SummaryLocation::TOP,
+                                                                                \Mystamyst\TableNice\Enums\SummaryLocation::BOTH,
+                                                                            ])
+                                                                        )
+                                                                        {{ $this->summaries['groups'][$groupName][$column->getName()] ?? '' }}
+                                                                    @endif
+                                                                </td>
                                             @endforeach
                                             <td @class(['sticky right-0 z-10', $this->theme['stickyCellBg']])></td>
                                         </tr>
@@ -579,11 +574,11 @@
 
                                 @empty
                                     <tr>
-                                        <td colspan="{{ count($this->columnsForView) + 2 }}"
-                                            class="px-6 py-12 text-center">
+                                        <td colspan="{{ count($this->columnsForView) + 2 }}" class="px-6 py-12 text-center">
                                             <div class="flex flex-col items-center justify-center">
-                                                <x-icon name="heroicon-o-circle-stack" @class(['w-12 h-12 mb-4', $this->theme['text']]) />
-                                                <p @class(['text-lg font-medium', $this->theme['text']])>No items found in this group</p>
+                                                <x-tablenice-icon name="heroicon-o-circle-stack" @class(['w-12 h-12 mb-4', $this->theme['text']]) />
+                                                <p @class(['text-lg font-medium', $this->theme['text']])>No items found in this
+                                                    group</p>
                                                 <p class="text-sm text-slate-500 dark:text-slate-400">Try adjusting
                                                     your search or filters</p>
                                             </div>
@@ -593,30 +588,32 @@
                             @else
                                 @if ($hasSummaryAtTop && optional($items)->isNotEmpty())
                                     <tr @class(['font-bold', $this->theme['summaryRowBg']])>
-                                        <td @class(['sticky left-0 z-10', $this->theme['stickyCellBg']]) style="min-width: 60px;"></td>
+                                        <td @class(['sticky left-0 z-10', $this->theme['stickyCellBg']])
+                                            style="min-width: 60px;"></td>
                                         @foreach ($this->columnsForView as $column)
-                                            <td @class([
-                                                'px-6 py-3 text-sm',
-                                                $this->theme['summaryRowText'],
-                                                $column->getAlignmentClass(),
-                                                'sticky z-10' => $column->isSticky(),
-                                                $this->theme['stickyCellBg'] => $column->isSticky(),
-                                            ])
-                                                @php
-                                                    $styles = [];
-                                                    if ($column->isSticky()) $styles[] = "left: {$column->stickyOffset}px";
-                                                    if ($column->getWidth()) $styles[] = "min-width: {$column->getWidth()}";
-                                                @endphp
-                                                @if (!empty($styles)) style="{{ implode('; ', $styles) }}" @endif>
-                                                @if (
-                                                    $column->hasSummary() &&
-                                                        in_array($column->getSummary()['location'], [
-                                                            \Mystamyst\TableNice\Enums\SummaryLocation::TOP,
-                                                            \Mystamyst\TableNice\Enums\SummaryLocation::BOTH,
-                                                        ]))
-                                                    {{ $this->summaries['total'][$column->getName()] ?? '' }}
-                                                @endif
-                                            </td>
+                                                                <td @class([
+                                                                    'px-6 py-3 text-sm',
+                                                                    $this->theme['summaryRowText'],
+                                                                    $column->getAlignmentClass(),
+                                                                    'sticky z-10' => $column->isSticky(),
+                                                                    $this->theme['stickyCellBg'] => $column->isSticky(),
+                                                                ]) @php
+                                                $styles = [];
+                                                if ($column->isSticky())
+                                                    $styles[] = "left: {$column->stickyOffset}px";
+                                                if ($column->getWidth())
+                                                    $styles[] = "min-width: {$column->getWidth()}";
+                                            @endphp @if (!empty($styles)) style="{{ implode('; ', $styles) }}" @endif>
+                                                                    @if (
+                                                                            $column->hasSummary() &&
+                                                                            in_array($column->getSummary()['location'], [
+                                                                                \Mystamyst\TableNice\Enums\SummaryLocation::TOP,
+                                                                                \Mystamyst\TableNice\Enums\SummaryLocation::BOTH,
+                                                                            ])
+                                                                        )
+                                                                        {{ $this->summaries['total'][$column->getName()] ?? '' }}
+                                                                    @endif
+                                                                </td>
                                         @endforeach
                                         <td @class(['sticky right-0 z-10', $this->theme['stickyCellBg']])></td>
                                     </tr>
@@ -651,35 +648,35 @@
                                                 <div x-show="!actionsColumn.isCollapsed" x-transition
                                                     class="flex items-center gap-1">
                                                     @foreach ($this->table->actions() as $action)
-                                                            <button
-                                                                wire:click="handleAction('{{ $action->getName() }}', '{{ data_get($item, $this->getKeyName()) }}')"
-                                                                type="button" @class([
-                                                                    'transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 flex items-center',
-                                                                    'rounded-lg' => $action->getDisplayType(),
-                                                                    'p-2' => $action->isIconOnly() && $action->getDisplayType(),
-                                                                    'gap-1.5 px-3 py-1.5 text-xs font-semibold' => !$action->isIconOnly() && $action->getDisplayType(),
-                                                                    'p-2 text-gray-400 rounded-full' => !$action->getDisplayType(),
-                                                                    $action->getButtonClasses(),
-                                                                    $this->theme['rowHover'] => !$action->getDisplayType(),
-                                                                    $this->theme['ring'],
-                                                                ])>
-                                                                @if ($action->getIcon() && $action->getIconPosition() === \Mystamyst\TableNice\Enums\Icons\IconPosition::PREFIX)
-                                                                    {!! $action->getIconHtml() !!}
-                                                                @endif
-                                                                @if (!$action->isIconOnly())
-                                                                    <span>{{ $action->getLabel() }}</span>
-                                                                @endif
-                                                                @if ($action->getIcon() && $action->getIconPosition() === \Mystamyst\TableNice\Enums\Icons\IconPosition::SUFFIX)
-                                                                    {!! $action->getIconHtml() !!}
-                                                                @endif
-                                                            </button>
+                                                        <button
+                                                            wire:click="handleAction('{{ $action->getName() }}', '{{ data_get($item, $this->getKeyName()) }}')"
+                                                            type="button" @class([
+                                                                'transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 flex items-center',
+                                                                'rounded-lg' => $action->getDisplayType(),
+                                                                'p-2' => $action->isIconOnly() && $action->getDisplayType(),
+                                                                'gap-1.5 px-3 py-1.5 text-xs font-semibold' => !$action->isIconOnly() && $action->getDisplayType(),
+                                                                'p-2 text-gray-400 rounded-full' => !$action->getDisplayType(),
+                                                                $action->getButtonClasses(),
+                                                                $this->theme['rowHover'] => !$action->getDisplayType(),
+                                                                $this->theme['ring'],
+                                                            ])>
+                                                            @if ($action->getIcon() && $action->getIconPosition() === \Mystamyst\TableNice\Enums\Icons\IconPosition::PREFIX)
+                                                                {!! $action->getIconHtml() !!}
+                                                            @endif
+                                                            @if (!$action->isIconOnly())
+                                                                <span>{{ $action->getLabel() }}</span>
+                                                            @endif
+                                                            @if ($action->getIcon() && $action->getIconPosition() === \Mystamyst\TableNice\Enums\Icons\IconPosition::SUFFIX)
+                                                                {!! $action->getIconHtml() !!}
+                                                            @endif
+                                                        </button>
                                                     @endforeach
                                                 </div>
                                             </div>
                                             <div x-data="{ open: false }" class="relative md:hidden">
                                                 <button @click="open = !open"
                                                     class="p-2 -m-2 text-gray-500 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700">
-                                                    <x-icon name="heroicon-s-ellipsis-vertical" class="w-5 h-5" />
+                                                    <x-tablenice-icon name="heroicon-s-ellipsis-vertical" class="w-5 h-5" />
                                                 </button>
                                                 <div x-show="open" @click.away="open = false" x-transition
                                                     class="absolute right-0 z-30 w-48 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-slate-800 dark:ring-slate-700"
@@ -702,10 +699,9 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="{{ count($this->columnsForView) + 2 }}"
-                                            class="px-6 py-12 text-center">
+                                        <td colspan="{{ count($this->columnsForView) + 2 }}" class="px-6 py-12 text-center">
                                             <div class="flex flex-col items-center justify-center">
-                                                <x-icon name="heroicon-o-circle-stack" @class(['w-12 h-12 mb-4', $this->theme['text']]) />
+                                                <x-tablenice-icon name="heroicon-o-circle-stack" @class(['w-12 h-12 mb-4', $this->theme['text']]) />
                                                 <p @class(['text-lg font-medium', $this->theme['text']])>No items found</p>
                                                 <p class="text-sm text-slate-500 dark:text-slate-400">Try adjusting
                                                     your search or filters</p>
@@ -719,38 +715,40 @@
                     @php
                         $hasSummaryAtBottom = collect($this->columnsForView)->some(
                             fn($c) => $c->hasSummary() &&
-                                in_array($c->getSummary()['location'], [
-                                    \Mystamyst\TableNice\Enums\SummaryLocation::BOTTOM,
-                                    \Mystamyst\TableNice\Enums\SummaryLocation::BOTH,
-                                ]),
+                            in_array($c->getSummary()['location'], [
+                                \Mystamyst\TableNice\Enums\SummaryLocation::BOTTOM,
+                                \Mystamyst\TableNice\Enums\SummaryLocation::BOTH,
+                            ]),
                         );
                     @endphp
                     @if ($hasSummaryAtBottom && !empty($this->summaries['total']))
                         <tfoot @class([$this->theme['headerBg']])>
                             <tr class="font-bold">
-                                <td @class(['sticky left-0 z-20', $this->theme['headerBgSolid']]) style="min-width: 60px;"></td>
+                                <td @class(['sticky left-0 z-20', $this->theme['headerBgSolid']]) style="min-width: 60px;">
+                                </td>
                                 @foreach ($this->columnsForView as $column)
-                                    <td @class([
-                                        'px-6 py-4 text-sm text-white',
-                                        $column->getAlignmentClass(),
-                                        'sticky z-10' => $column->isSticky(),
-                                        $this->theme['headerBgSolid'] => $column->isSticky(),
-                                    ])
-                                        @php
-                                            $styles = [];
-                                            if ($column->isSticky()) $styles[] = "left: {$column->stickyOffset}px";
-                                            if ($column->getWidth()) $styles[] = "min-width: {$column->getWidth()}";
-                                        @endphp
-                                        @if (!empty($styles)) style="{{ implode('; ', $styles) }}" @endif>
-                                        @if (
-                                            $column->hasSummary() &&
-                                                in_array($column->getSummary()['location'], [
-                                                    \Mystamyst\TableNice\Enums\SummaryLocation::BOTTOM,
-                                                    \Mystamyst\TableNice\Enums\SummaryLocation::BOTH,
-                                                ]))
-                                            {{ $this->summaries['total'][$column->getName()] ?? '' }}
-                                        @endif
-                                    </td>
+                                                        <td @class([
+                                                            'px-6 py-4 text-sm text-white',
+                                                            $column->getAlignmentClass(),
+                                                            'sticky z-10' => $column->isSticky(),
+                                                            $this->theme['headerBgSolid'] => $column->isSticky(),
+                                                        ]) @php
+                                        $styles = [];
+                                        if ($column->isSticky())
+                                            $styles[] = "left: {$column->stickyOffset}px";
+                                        if ($column->getWidth())
+                                            $styles[] = "min-width: {$column->getWidth()}";
+                                    @endphp @if (!empty($styles)) style="{{ implode('; ', $styles) }}" @endif>
+                                                            @if (
+                                                                    $column->hasSummary() &&
+                                                                    in_array($column->getSummary()['location'], [
+                                                                        \Mystamyst\TableNice\Enums\SummaryLocation::BOTTOM,
+                                                                        \Mystamyst\TableNice\Enums\SummaryLocation::BOTH,
+                                                                    ])
+                                                                )
+                                                                {{ $this->summaries['total'][$column->getName()] ?? '' }}
+                                                            @endif
+                                                        </td>
                                 @endforeach
                                 <td @class(['sticky right-0 z-20', $this->theme['headerBgSolid']])></td>
                             </tr>
@@ -766,10 +764,9 @@
                 <div wire:loading.delay.longer
                     wire:target="search, filters, activeGroup, perPage, perGroup, sortField, sortDirection, gotoPage, nextPage, previousPage"
                     class="flex items-center justify-center p-4">
-                    <svg @class(['w-8 h-8 animate-spin', $this->theme['text']]) xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                            stroke-width="4"></circle>
+                    <svg @class(['w-8 h-8 animate-spin', $this->theme['text']]) xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor"
                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                         </path>
@@ -783,9 +780,9 @@
                         $this->theme['tableContainer'],
                     ])>
                     @if ($items && !$groupedItems)
-                        {{ $items->links('tablenice::livewire.pagination.alpha') }}
+                        {{ $items->links(config('tablenice.pagination.view', 'tablenice::livewire.pagination.alpha')) }}
                     @elseif($groupedItems)
-                        {{ $this->paginatedItems()->links('tablenice::livewire.pagination.alpha') }}
+                        {{ $this->paginatedItems()->links(config('tablenice.pagination.view', 'tablenice::livewire.pagination.alpha')) }}
                     @endif
                 </div>
             </div>
@@ -793,13 +790,11 @@
     </div>
 
     {{-- Global Tooltip --}}
-    <div id="global-tooltip" x-data x-show="$store.tooltip.visible" x-cloak x-transition role="tooltip"
-        @class([
-            'absolute z-50 px-3 py-2 text-sm font-semibold text-white rounded-lg shadow-lg',
-            $this->theme['headerBgSolid'] ?? 'bg-gray-900 dark:bg-slate-900',
-        ])>
+    <div id="global-tooltip" x-data x-show="$store.tooltip.visible" x-cloak x-transition role="tooltip" @class([
+        'absolute z-50 px-3 py-2 text-sm font-semibold text-white rounded-lg shadow-lg',
+        $this->theme['headerBgSolid'] ?? 'bg-gray-900 dark:bg-slate-900',
+    ])>
         <div x-html="$store.tooltip.content"></div>
         <div id="arrow" data-popper-arrow></div>
     </div>
 </div>
-

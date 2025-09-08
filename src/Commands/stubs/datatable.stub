@@ -17,7 +17,7 @@ class {{ class }} extends Table
     /**
      * The Eloquent model class for the table.
      */
-    public string $model = {{ modelName }}::class;
+    public ?string $model = {{ modelName }}::class;
 
     /**
      * Defines the columns of the table.
