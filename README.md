@@ -146,7 +146,7 @@ public function query(): Builder
 
 ### 4. Advanced Usage: API / Collection Data Source
 
-TableNice is not limited to Eloquent models. You can source your data from anywhere by overriding the `data()` method. If this method returns a Collection, it will be used instead of the `query()` method.
+TableNice is not limited to Eloquent models. You can source your data from anywhere by overriding the `data()` method.  If this method returns a Collection, it will be used instead of the `query()` method.
 
 ```php
 use Illuminate\Support\Collection;

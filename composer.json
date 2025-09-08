@@ -1,7 +1,7 @@
 {
     "name": "mystamyst/tablenice",
     "description": "Effortlessly create beautiful, interactive data tables for your Laravel applications with this intuitive Livewire component. Built with Tailwind CSS and Alpine.js, it delivers a seamless developer experience while providing users with responsive, feature-rich tables that enhance any web application.",
-    "version": "1.0.1.2",
+    "version": "1.0.1.3",
     "type": "library",
     "require": {
         "livewire/livewire": "^3.6",

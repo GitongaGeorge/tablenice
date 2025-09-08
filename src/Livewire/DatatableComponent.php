@@ -286,7 +286,7 @@ class DatatableComponent extends Component
             }
             $this->refresh();
         } else {
-            $this->dispatch('showAlert', message: 'Error: Could not find the record to perform the action.', type: 'error', theme: $this->theme());
+            $this->dispatch('showAlert', message: 'Error:  Could not find the record to perform the action.', type: 'error', theme: $this->theme());
         }
     }
 

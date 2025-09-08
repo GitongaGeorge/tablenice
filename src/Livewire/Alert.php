@@ -28,7 +28,7 @@ class Alert extends Component
     }
 
     /**
-     * Computes the appropriate CSS classes for the alert based on its type and the provided theme.
+     * Computes the appropriate CSS  classes for the alert based on its type and the provided theme.
      */
     #[Computed]
     public function styles(): array
