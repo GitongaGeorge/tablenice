@@ -40,9 +40,8 @@ class InstallCommand extends Command
         $this->line("\n<fg=yellow>2. Install and configure frontend dependencies</>");
         $this->line('   Run the following command in your terminal:');
         $this->line('   <fg=cyan>npm install -D chart.js dayjs litepicker trix @tailwindcss/typography @popperjs/core</>');
-        $this->line("\n   Then, add the typography plugin to your <fg=gray>tailwind.config.js</> file:");
-        $this->line("   <fg=cyan>plugins: [require('@tailwindcss/typography')],</>");
 
+        $this->provideTailwindInstructions();
 
         return self::SUCCESS;
     }
@@ -60,6 +59,60 @@ class InstallCommand extends Command
         File::copy(__DIR__.'/stubs/datatablepageb.stub', resource_path('views/livewire/datatable-page.blade.php'));
 
         $this->info('Published [app/Livewire/DatatablePage.php] and [resources/views/livewire/datatable-page.blade.php]');
+    }
+
+    protected function provideTailwindInstructions()
+    {
+        $tailwindVersion = $this->detectTailwindVersion();
+        
+        $this->line("\n   Then, add the typography plugin:");
+        
+        if ($tailwindVersion === 4) {
+            $this->line('   <fg=green>Tailwind CSS v4 detected:</> Add this line to your <fg=gray>resources/css/app.css</> file:');
+            $this->line('   <fg=cyan>@plugin "@tailwindcss/typography";</>');
+        } elseif ($tailwindVersion === 3) {
+            $this->line('   <fg=green>Tailwind CSS v3 detected:</> Add the typography plugin to your <fg=gray>tailwind.config.js</> file:');
+            $this->line("   <fg=cyan>plugins: [require('@tailwindcss/typography')],</>");
+        } else {
+            $this->line('   <fg=yellow>Could not detect Tailwind CSS version.</> Choose the appropriate method:');
+            $this->line('   <fg=cyan>• For Tailwind v4:</> Add <fg=gray>@plugin "@tailwindcss/typography";</> to your <fg=gray>resources/css/app.css</> file');
+            $this->line('   <fg=cyan>• For Tailwind v3:</> Add <fg=gray>require(\'@tailwindcss/typography\')</> to the plugins array in <fg=gray>tailwind.config.js</>');
+        }
+    }
+
+    protected function detectTailwindVersion(): ?int
+    {
+        // Check if tailwind.config.js exists (v3 style)
+        if (File::exists(base_path('tailwind.config.js'))) {
+            return 3;
+        }
+
+        // Check package.json for tailwind version
+        $packageJsonPath = base_path('package.json');
+        if (File::exists($packageJsonPath)) {
+            $packageJson = json_decode(File::get($packageJsonPath), true);
+            
+            $tailwindVersion = $packageJson['devDependencies']['tailwindcss'] ?? 
+                             $packageJson['dependencies']['tailwindcss'] ?? null;
+            
+            if ($tailwindVersion) {
+                // Extract major version number from version string (e.g., "^4.0.0" -> 4)
+                if (preg_match('/[\^~]?(\d+)/', $tailwindVersion, $matches)) {
+                    return (int) $matches[1];
+                }
+            }
+        }
+
+        // Check if app.css contains @tailwind directives without config file (likely v4)
+        $appCssPath = resource_path('css/app.css');
+        if (File::exists($appCssPath) && !File::exists(base_path('tailwind.config.js'))) {
+            $appCssContent = File::get($appCssPath);
+            if (str_contains($appCssContent, '@tailwind') || str_contains($appCssContent, '@import "tailwindcss"')) {
+                return 4;
+            }
+        }
+
+        return null;
     }
 
     protected function installIconPackages()
@@ -96,4 +149,3 @@ class InstallCommand extends Command
         }
     }
 }
-
