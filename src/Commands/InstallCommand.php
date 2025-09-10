@@ -56,8 +56,8 @@ class InstallCommand extends Command
             File::makeDirectory(resource_path('views/livewire'));
         }
 
-        File::copy(__DIR__.'/stubs/DatatablePage.php.stub', app_path('Livewire/DatatablePage.php'));
-        File::copy(__DIR__.'/stubs/datatable-page.blade.php.stub', resource_path('views/livewire/datatable-page.blade.php'));
+        File::copy(__DIR__.'/stubs/datatable.page.stub', app_path('Livewire/DatatablePage.php'));
+        File::copy(__DIR__.'/stubs/datatablepageb.stub', resource_path('views/livewire/datatable-page.blade.php'));
 
         $this->info('Published [app/Livewire/DatatablePage.php] and [resources/views/livewire/datatable-page.blade.php]');
     }
