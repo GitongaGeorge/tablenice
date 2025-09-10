@@ -37,14 +37,15 @@ php artisan tablenice:install
 This command will:
 - Publish the `tablenice.php` configuration file to your `config/` directory.
 - Publish a `DatatablePage.php` Livewire component and its corresponding view. These are required to use the `--route` option in the `make:datatable` command.
+- Automatically detect your Tailwind CSS version and provide appropriate configuration instructions.
 - Provide you with clear, copy-pasteable instructions for the final manual steps.
 
 ### 3. Frontend Dependencies
 
-The interactive elements of TableNice, like charts, calendars, and the rich text editor, require a few frontend packages. The install command will remind you to install these via npm:
+The interactive elements of TableNice, like charts, calendars, and the rich text editor, require a few frontend packages. Install these via npm:
 
 ```bash
-npm install chart.js dayjs litepicker trix
+npm install -D chart.js dayjs litepicker trix @tailwindcss/typography @popperjs/core
 ```
 
 Then, import them in your main JavaScript file (e.g., `resources/js/app.js`):
@@ -63,7 +64,33 @@ window.Litepicker = Litepicker;
 window.dayjs = dayjs;
 ```
 
-### 4. Update Your Main Layout
+### 4. Configure Tailwind CSS Typography Plugin
+
+TableNice requires the `@tailwindcss/typography` plugin for rich text formatting. The configuration depends on your Tailwind CSS version:
+
+#### For Tailwind CSS v4
+Add the following line to your `resources/css/app.css` file:
+
+```css
+@plugin "@tailwindcss/typography";
+```
+
+#### For Tailwind CSS v3
+Add the typography plugin to your `tailwind.config.js` file:
+
+```javascript
+module.exports = {
+  // ... other config
+  plugins: [
+    require('@tailwindcss/typography'),
+    // ... other plugins
+  ],
+}
+```
+
+> **Note**: The `tablenice:install` command will automatically detect your Tailwind version and provide the appropriate instructions.
+
+### 5. Update Your Main Layout
 
 For modals and alerts to work correctly across your entire application, you must add the global TableNice Livewire components to your main layout file (e.g., `resources/views/layouts/app.blade.php`). Place these tags just before the closing `</body>` tag.
 
@@ -73,6 +100,7 @@ For modals and alerts to work correctly across your entire application, you must
     <livewire:tablenice-alert />
     <livewire:tablenice-form-modal />
     <livewire:tablenice-confirmation-modal />
+    @stack('tablenice-scripts')
     
     @livewireScripts
 </body>
@@ -146,7 +174,7 @@ public function query(): Builder
 
 ### 4. Advanced Usage: API / Collection Data Source
 
-TableNice is not limited to Eloquent models. You can source your data from anywhere by overriding the `data()` method.  If this method returns a Collection, it will be used instead of the `query()` method.
+TableNice is not limited to Eloquent models. You can source your data from anywhere by overriding the `data()` method. If this method returns a Collection, it will be used instead of the `query()` method.
 
 ```php
 use Illuminate\Support\Collection;
