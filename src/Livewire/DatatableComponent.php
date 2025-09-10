@@ -2,8 +2,6 @@
 
 namespace Mystamyst\TableNice\Livewire;
 
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Mystamyst\TableNice\Actions\Action;
 use Mystamyst\TableNice\Actions\BulkAction;
 use Mystamyst\TableNice\Actions\PageAction;
@@ -11,15 +9,15 @@ use Mystamyst\TableNice\Columns\Column;
 use Mystamyst\TableNice\Columns\IndexColumn;
 use Mystamyst\TableNice\Columns\RelationColumn;
 use Mystamyst\TableNice\Table;
-use Mystamyst\TableNice\QueryFilters\Filter;
-use Mystamyst\TableNice\QueryFilters\Search;
-use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 
 class DatatableComponent extends Component
 {
@@ -83,8 +81,10 @@ class DatatableComponent extends Component
             if ($column->isSticky()) {
                 $column->setStickyOffset($stickyOffset);
                 $widthString = $column->getWidth();
-                $width = $widthString ? (int) filter_var($widthString, FILTER_SANITIZE_NUMBER_INT) : 150;
-                $stickyOffset += $width;
+                // A simple regex to extract the numeric part of the width (e.g., '150px' -> 150)
+                preg_match('/^\d+/', $widthString, $matches);
+                $width = $matches[0] ?? 150;
+                $stickyOffset += (int) $width;
             }
         }
         return $columns->all();
@@ -133,16 +133,13 @@ class DatatableComponent extends Component
 
     public function updatedSelectedRows()
     {
-        $keyName = $this->getKeyName();
-        $pageIds = $this->paginatedItems()->getCollection()->pluck($keyName)->map(fn($id) => (string) $id);
+        $pageIds = $this->paginatedItems()->pluck($this->getKeyName())->map(fn($id) => (string) $id);
         $this->selectAll = $pageIds->isNotEmpty() && $pageIds->every(fn($id) => in_array($id, $this->selectedRows));
     }
 
     public function updatedSelectAll($value)
     {
-        $keyName = $this->getKeyName();
-        $pageIds = $this->paginatedItems()->getCollection()->pluck($keyName)->map(fn($id) => (string) $id)->toArray();
-
+        $pageIds = $this->paginatedItems()->pluck($this->getKeyName())->map(fn($id) => (string) $id)->toArray();
         if ($value) {
             $this->selectedRows = array_unique(array_merge($this->selectedRows, $pageIds));
         } else {
@@ -175,9 +172,16 @@ class DatatableComponent extends Component
         }
     }
 
-    protected function buildQuery()
+    #[Computed]
+    public function allItems(): Collection
     {
-        $query = $this->table->query(); // Use the new query() method
+        // If a data collection is provided, use it directly.
+        if (!is_null($data = $this->table()->data())) {
+            return $data;
+        }
+
+        // Otherwise, build and execute the Eloquent query.
+        $query = $this->table()->query();
 
         $relationsToLoad = collect($this->table->columns())
             ->filter(fn($column) => $column instanceof RelationColumn)
@@ -189,33 +193,66 @@ class DatatableComponent extends Component
             $query->with($relationsToLoad);
         }
 
-        $state = app(Pipeline::class)
-            ->send([
-                'query' => $query,
-                'search_term' => $this->search,
-                'searchable_columns' => collect($this->table->columns())->filter->isSearchable()->all(),
-                'active_filters' => $this->filters,
-                'all_columns' => $this->table->columns(),
-            ])
-            ->through([Search::class, Filter::class])
-            ->thenReturn();
+        return $query->get();
+    }
 
-        $baseQuery = $state['query'];
+    #[Computed]
+    public function filteredAndSortedItems(): Collection
+    {
+        $items = $this->allItems();
 
-        if ($this->sortField && !$this->activeGroupData()) {
-            $sortColumn = collect($this->table->columns())->first(fn(Column $c) => $c->getName() === $this->sortField);
-            if ($sortColumn) {
-                $baseQuery = $sortColumn->sortLogic($baseQuery, $this->sortDirection);
+        // Apply Search
+        if ($this->search) {
+            $searchableColumns = collect($this->table->columns())->filter->isSearchable();
+            $items = $items->filter(function ($item) use ($searchableColumns) {
+                foreach ($searchableColumns as $column) {
+                    if (Str::contains(strtolower(data_get($item, $column->getName())), strtolower($this->search))) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+        }
+
+        // Apply Filters
+        $activeFilters = collect($this->filters)->filter(fn ($value) => $value !== '' && $value !== null);
+        if ($activeFilters->isNotEmpty()) {
+            foreach ($activeFilters as $columnName => $value) {
+                $items = $items->where($columnName, $value);
             }
         }
 
-        return $baseQuery;
+        // Apply Sorting
+        if ($this->sortField) {
+            $items = $this->sortDirection === 'asc'
+                ? $items->sortBy($this->sortField)
+                : $items->sortByDesc($this->sortField);
+        }
+
+        return $items;
+    }
+
+
+    public function handlePageAction(string $actionName)
+    {
+        $action = collect($this->table->pageActions())->first(fn(PageAction $action) => $action->getName() === $actionName);
+        if (!$action) return;
+
+        if ($action->getForm()) {
+            $this->dispatch('showFormModal', [
+                'component' => 'tablenice-action-form',
+                'params' => ['datatableClass' => $this->tableClass, 'actionName' => $action->getName(), 'modelId' => null, 'theme' => $this->theme()],
+                'title' => $action->getLabel(), 'size' => $action->getModalSize(),
+            ]);
+        } else {
+            $this->runPageAction($actionName);
+        }
     }
 
     public function handleAction(string $actionName, $modelId = null)
     {
         $action = collect($this->table->actions())->first(fn(Action $action) => $action->getName() === $actionName);
-        
+
         if (!$action) {
             $pageAction = collect($this->table->pageActions())->first(fn(PageAction $a) => $a->getName() === $actionName);
             if ($pageAction) {
@@ -241,22 +278,6 @@ class DatatableComponent extends Component
         }
     }
 
-    public function handlePageAction(string $actionName)
-    {
-        $action = collect($this->table->pageActions())->first(fn(PageAction $action) => $action->getName() === $actionName);
-        if (!$action) return;
-
-        if ($action->getForm()) {
-            $this->dispatch('showFormModal', [
-                'component' => 'tablenice-action-form',
-                'params' => ['datatableClass' => $this->tableClass, 'actionName' => $action->getName(), 'modelId' => null, 'theme' => $this->theme()],
-                'title' => $action->getLabel(), 'size' => $action->getModalSize(),
-            ]);
-        } else {
-            $this->runPageAction($actionName);
-        }
-    }
-
     public function handleBulkAction()
     {
         if (!$this->activeBulkAction || empty($this->selectedRows)) return;
@@ -276,9 +297,9 @@ class DatatableComponent extends Component
     #[On('runAction')]
     public function runAction(string $actionName, $modelId)
     {
+        $model = $this->findItem($modelId);
         $action = collect($this->table->actions())->first(fn(Action $action) => $action->getName() === $actionName);
-        $model = $this->table->query()->find($modelId);
-        
+
         if ($action && $model) {
             $action->runOnModel($model);
             if ($message = $action->getSuccessMessage()) {
@@ -286,7 +307,7 @@ class DatatableComponent extends Component
             }
             $this->refresh();
         } else {
-            $this->dispatch('showAlert', message: 'Error:  Could not find the record to perform the action.', type: 'error', theme: $this->theme());
+            $this->dispatch('showAlert', message: 'Error: Could not find the record to perform the action.', type: 'error', theme: $this->theme());
         }
     }
 
@@ -294,7 +315,13 @@ class DatatableComponent extends Component
     public function runBulkAction()
     {
         $action = collect($this->table->bulkActions())->first(fn(BulkAction $action) => $action->getName() === $this->activeBulkAction);
-        $models = $this->table->query()->whereIn($this->getKeyName(), $this->selectedRows)->get();
+
+        if (!$this->table()->model) {
+             $this->dispatch('showAlert', message: 'Error: Bulk actions are only supported for Eloquent models.', type: 'error', theme: $this->theme());
+             return;
+        }
+
+        $models = ($this->table()->model)::whereIn(($this->table()->model)::make()->getKeyName(), $this->selectedRows)->get();
         foreach ($models as $model) {
             $action->runOnModel($model);
         }
@@ -304,89 +331,6 @@ class DatatableComponent extends Component
         $this->refresh();
     }
 
-    #[Computed]
-    public function paginatedItems(): LengthAwarePaginator
-    {
-        // Check if a custom data collection is provided
-        if (($data = $this->table->data()) !== null) {
-            // Manually handle filtering, searching, and sorting for collections
-            $collection = $this->processCollection($data);
-
-            return new Paginator(
-                $collection->forPage($this->getPage(), $this->perPage),
-                $collection->count(),
-                $this->perPage,
-                $this->getPage()
-            );
-        }
-
-        // Fallback to Eloquent query builder
-        $query = $this->buildQuery();
-        if ($this->activeGroupData()) {
-            $query->orderBy($this->activeGroupData()->name, $this->activeGroupData()->direction->value);
-        }
-        return $query->paginate($this->perPage);
-    }
-    
-    protected function processCollection(Collection $collection): Collection
-    {
-        // Apply search
-        if (!empty($this->search)) {
-            $searchableColumns = collect($this->table->columns())->filter->isSearchable()->pluck('name')->all();
-            $collection = $collection->filter(function ($item) use ($searchableColumns) {
-                foreach ($searchableColumns as $column) {
-                    if (Str::contains(strtolower(data_get($item, $column)), strtolower($this->search))) {
-                        return true;
-                    }
-                }
-                return false;
-            });
-        }
-
-        // Apply filters
-        if ($this->hasActiveFilters) {
-            foreach($this->filters as $field => $value) {
-                if (!empty($value)) {
-                    $collection = $collection->where($field, $value);
-                }
-            }
-        }
-        
-        // Apply sorting
-        if ($this->sortField) {
-            $collection = $this->sortDirection === 'asc'
-                ? $collection->sortBy($this->sortField)
-                : $collection->sortByDesc($this->sortField);
-        }
-
-        return $collection->values();
-    }
-
-    public function render()
-    {
-        $items = $this->activeGroupData() ? null : $this->paginatedItems();
-        $groupedItems = $this->groupedItems();
-        
-        if($items) {
-            foreach($this->columnsForView as $column) {
-                if ($column instanceof IndexColumn) {
-                    $column->paginated($items->currentPage(), $items->perPage());
-                }
-            }
-        }
-        
-        return view('tablenice::livewire.datatable-component', [
-            'items' => $items,
-            'groupedItems' => $groupedItems,
-        ]);
-    }
-    
-    // ... (rest of component is unchanged but included for completeness)
-    private function getKeyName(): string
-    {
-        return $this->table->model ? app($this->table->model)->getKeyName() : 'id';
-    }
-    
     #[Computed]
     public function availableGroups(): array
     {
@@ -401,7 +345,25 @@ class DatatableComponent extends Component
         if (!$this->activeGroup) return null;
         return $this->availableGroups()[$this->activeGroup] ?? null;
     }
-    
+
+    #[Computed]
+    public function paginatedItems()
+    {
+        $items = $this->filteredAndSortedItems();
+
+        $page = $this->getPage();
+        $perPage = $this->perPage;
+
+        return new LengthAwarePaginator(
+            $items->forPage($page, $perPage),
+            $items->count(),
+            $perPage,
+            $page,
+            ['path' => request()->url()]
+        );
+    }
+
+
     #[Computed]
     public function groupedItems()
     {
@@ -423,7 +385,7 @@ class DatatableComponent extends Component
         $summaryColumns = collect($this->table->columns())->filter->hasSummary();
         if ($summaryColumns->isEmpty()) return $summaries;
 
-        $allItemsForTotalSummary = ($this->table->data() !== null) ? $this->processCollection($this->table->data()) : $this->buildQuery()->get();
+        $allItemsForTotalSummary = $this->filteredAndSortedItems();
 
         foreach ($summaryColumns as $column) {
             $summaries['total'][$column->getName()] = $this->calculateColumnSummary($column, $allItemsForTotalSummary, 'total');
@@ -445,7 +407,7 @@ class DatatableComponent extends Component
     public function summaryCards()
     {
         $cards = [];
-        $allItems = ($this->table->data() !== null) ? $this->processCollection($this->table->data()) : $this->buildQuery()->get();
+        $allItems = $this->filteredAndSortedItems();
         foreach ($this->table->cards() as $card) {
             $cards[] = [
                 'title' => $card->title,
@@ -459,6 +421,17 @@ class DatatableComponent extends Component
         }
         return $cards;
     }
+
+    private function findItem($id)
+    {
+        return $this->allItems()->first(fn ($item) => data_get($item, $this->getKeyName()) == $id);
+    }
+
+    private function getKeyName(): string
+    {
+        return $this->table()->model ? ($this->table()->model)::make()->getKeyName() : 'id';
+    }
+
 
     private function getGroupingLogic()
     {
@@ -482,6 +455,25 @@ class DatatableComponent extends Component
             $formattedValue = number_format($rawValue);
         }
         return str_replace('{value}', $formattedValue, $labelFormat);
+    }
+
+    public function render()
+    {
+        $items = $this->activeGroupData() ? null : $this->paginatedItems();
+        $groupedItems = $this->groupedItems();
+
+        if($items) {
+            foreach($this->columnsForView as $column) {
+                if ($column instanceof IndexColumn) {
+                    $column->paginated($items->currentPage(), $items->perPage());
+                }
+            }
+        }
+
+        return view('tablenice::livewire.datatable-component', [
+            'items' => $items,
+            'groupedItems' => $groupedItems,
+        ]);
     }
 }
 

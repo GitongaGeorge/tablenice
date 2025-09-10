@@ -16,6 +16,7 @@ enum Theme
     case SILVER;
     case GOLD;
     case BLACK_AND_WHITE;
+    case INDIGO_VIOLET;
 
     public function classes(): array
     {
@@ -26,6 +27,41 @@ enum Theme
         ];
 
         $themeClasses = match ($this) {
+            
+            self::INDIGO_VIOLET => [
+                'name' => 'Indigo Violet',
+                'text' => 'text-slate-600 dark:text-slate-300',
+                'ring' => 'focus:ring-indigo-500',
+                'checkbox' => 'text-indigo-600 focus:ring-indigo-500 dark:text-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-slate-800',
+                'pageBg' => 'bg-slate-50 dark:bg-slate-900',
+                'cardBg' => 'bg-white/60 dark:bg-slate-800/60',
+                'cardBorder' => 'ring-1 ring-slate-200 dark:ring-slate-700',
+                'cardShadow' => 'shadow-lg dark:shadow-slate-950/50',
+                'tableContainer' => 'bg-white/60 dark:bg-slate-800/60 ring-1 ring-slate-200 dark:ring-slate-700',
+                'headerBg' => 'bg-gradient-to-r from-indigo-500 via-purple-500 to-violet-600 dark:from-indigo-600 dark:via-purple-600 dark:to-violet-700',
+                'headerBgSolid' => 'bg-indigo-600 dark:bg-indigo-700',
+                'tbody' => 'divide-y divide-slate-200 dark:divide-slate-700',
+                'rowHover' => 'hover:bg-slate-100/80 dark:hover:bg-slate-700/60',
+                'stickyCellBg' => 'bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm',
+                'stickyCellHoverBg' => 'group-hover:bg-slate-100/80 dark:group-hover:bg-slate-700/80',
+                'inputBg' => 'bg-white/80 dark:bg-slate-900/80',
+                'inputPlaceholder' => 'placeholder-slate-400 dark:placeholder-slate-500',
+                'controlButtonBg' => 'bg-white/80 dark:bg-slate-800/80',
+                'selectBg' => 'bg-white/80 dark:bg-slate-800/80',
+                'groupHeaderBg' => 'bg-slate-100 dark:bg-slate-700/50',
+                'groupHeaderText' => 'text-slate-700 dark:text-slate-200',
+                'summaryRowBg' => 'bg-slate-100/80 dark:bg-slate-700/80',
+                'summaryRowText' => 'text-slate-800 dark:text-slate-200',
+                'pagination' => 'ring-1 ring-slate-200 dark:ring-slate-700',
+                'paginationButtonBg' => 'bg-white dark:bg-slate-800',
+                'paginationButtonText' => 'text-slate-600 dark:text-slate-300',
+                'paginationActiveButtonBg' => 'bg-gradient-to-r from-indigo-500 to-purple-600',
+                'paginationActiveButtonText' => 'text-white',
+                'paginationDisabledButtonBg' => 'bg-slate-100 dark:bg-slate-800/50',
+                'paginationDisabledButtonText' => 'text-slate-400 dark:text-slate-500',
+                'buttonBg' => 'bg-gradient-to-r from-indigo-500 to-purple-600',
+                'buttonBgHover' => 'hover:shadow-indigo-500/50',
+            ],
             self::INDIGO => [
                 'name' => 'Indigo',
                 'text' => 'text-indigo-600 dark:text-indigo-400',

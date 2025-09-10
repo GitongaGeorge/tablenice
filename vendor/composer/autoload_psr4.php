@@ -68,7 +68,12 @@ return array(
     'Egulias\\EmailValidator\\' => array($vendorDir . '/egulias/email-validator/src'),
     'Doctrine\\Inflector\\' => array($vendorDir . '/doctrine/inflector/src'),
     'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/src'),
+    'Codeat3\\BladePhosphorIcons\\' => array($vendorDir . '/codeat3/blade-phosphor-icons/src'),
+    'Codeat3\\BladeIconpark\\' => array($vendorDir . '/codeat3/blade-iconpark/src'),
+    'Codeat3\\BladeCarbonIcons\\' => array($vendorDir . '/codeat3/blade-carbon-icons/src'),
     'Carbon\\Doctrine\\' => array($vendorDir . '/carbonphp/carbon-doctrine-types/src/Carbon/Doctrine'),
     'Carbon\\' => array($vendorDir . '/nesbot/carbon/src/Carbon'),
     'Brick\\Math\\' => array($vendorDir . '/brick/math/src'),
+    'BladeUI\\Icons\\' => array($vendorDir . '/blade-ui-kit/blade-icons/src'),
+    'BladeUI\\Heroicons\\' => array($vendorDir . '/blade-ui-kit/blade-heroicons/src'),
 );

@@ -2,10 +2,6 @@
 
 namespace Mystamyst\TableNice;
 
-use Mystamyst\TableNice\Actions\Action;
-use Mystamyst\TableNice\Actions\BulkAction;
-use Mystamyst\TableNice\Actions\PageAction;
-use Mystamyst\TableNice\Columns\Column;
 use Mystamyst\TableNice\Enums\Theme;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -41,20 +37,17 @@ abstract class Table
     public function query(): Builder
     {
         if (!$this->model) {
-            throw new \Exception('The $model property must be set on the Table class, or the query() method must be overridden.');
+            throw new \Exception('The $model property must be set on the Table class, or the query() or data() method must be overridden.');
         }
         return ($this->model)::query();
     }
 
     /**
-     * Provide a custom data source for the table.
+     * Provide a data source from a Collection or an API.
      *
-     * Override this method to populate the table from an API, a custom
-     * collection, multiple models, etc. If this method returns a collection,
-     * it will be used instead of the query() method.
-     *
-     * Note: For features like bulk actions to work correctly, each item
-     * in the collection should be an object with a unique 'id' property.
+     * If this method returns a Collection, it will be used as the data source
+     * instead of the `query()` method. This is ideal for non-Eloquent data.
+     * Ensure each item in the collection has a unique 'id'.
      *
      * @return Collection|null
      */
@@ -96,7 +89,7 @@ abstract class Table
      */
     public function theme(): Theme
     {
-        return Theme::BLUE;
+        return Theme::INDIGO_VIOLET;
     }
 
     public function showSearch(): bool
@@ -131,12 +124,13 @@ abstract class Table
 
     public function defaultSortField(): ?string
     {
-        $firstSortable = collect($this->columns())->first(fn ($c) => $c->isSortable());
-        return $firstSortable ? $firstSortable->getName() : 'id';
+        $firstSortable = collect($this->columns())->first(fn($column) => $column->isSortable());
+        return $firstSortable?->getName();
     }
 
     public function defaultSortDirection(): string
     {
-        return 'desc';
+        return 'asc';
     }
 }
+

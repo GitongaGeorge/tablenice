@@ -22,7 +22,7 @@ class Icon extends Component
      */
     public function render()
     {
-        // This correctly points to the Blade view where the attributes will be available.
+        // This correctly points to the Blade view where the $attributes variable is available.
         return view('tablenice::components.icon');
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Mystamyst\TableNice;
 
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Mystamyst\TableNice\Commands\InstallCommand;
@@ -13,7 +12,7 @@ use Mystamyst\TableNice\Livewire\Alert;
 use Mystamyst\TableNice\Livewire\ConfirmationModal;
 use Mystamyst\TableNice\Livewire\DatatableComponent;
 use Mystamyst\TableNice\Livewire\FormModal;
-use Mystamyst\TableNice\View\Components\Icon as TableNiceIcon;
+use Mystamyst\TableNice\View\Components\Icon;
 
 class TableNiceServiceProvider extends ServiceProvider
 {
@@ -27,6 +26,10 @@ class TableNiceServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'tablenice');
+        $this->loadViewComponentsAs('tablenice', [
+            Icon::class,
+        ]);
+
 
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -43,11 +46,8 @@ class TableNiceServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../resources/views' => resource_path('views/vendor/tablenice'),
         ], 'tablenice-views');
-        
-        // Register the package's own icon component to avoid conflicts.
-        Blade::component('tablenice-icon', TableNiceIcon::class);
 
-        // Register Livewire components with a unique prefix.
+        // Register Livewire components with a prefix
         Livewire::component('tablenice-datatable', DatatableComponent::class);
         Livewire::component('tablenice-action-form', ActionForm::class);
         Livewire::component('tablenice-alert', Alert::class);
