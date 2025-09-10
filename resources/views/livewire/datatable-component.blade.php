@@ -1,6 +1,6 @@
 <div>
     @push('tablenice-scripts')
-        @include('partials.script')
+        @include('tablenice::partials.script')
     @endpush
 
     <style>

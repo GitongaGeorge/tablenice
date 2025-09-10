@@ -22,6 +22,14 @@ class InstallCommand extends Command
             '--force' => true,
         ]);
 
+        $this->comment('Publishing view files...');
+        $this->call('vendor:publish', [
+            '--provider' => 'Mystamyst\TableNice\TableNiceServiceProvider',
+            '--tag' => 'tablenice-views',
+            '--force' => true,
+        ]);
+        $this->info('Published TableNice view files to [resources/views/vendor/tablenice/]');
+
         $this->comment('Publishing page component stubs for full-page tables...');
         $this->publishStubs();
 
