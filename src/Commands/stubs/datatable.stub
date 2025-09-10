@@ -44,7 +44,7 @@ class {{ class }} extends Table
     {
         return [
             CreateAction::make()
-                ->form({{ formClass }}::class),
+                ->form({{ formClassName }}::class),
         ];
     }
 
@@ -55,7 +55,7 @@ class {{ class }} extends Table
     {
         return [
             EditAction::make()
-                ->form({{ formClass }}::class),
+                ->form({{ formClassName }}::class),
             
             DeleteAction::make()
                 ->requiresConfirmation(),

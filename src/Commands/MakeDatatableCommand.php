@@ -46,15 +46,20 @@ class MakeDatatableCommand extends GeneratorCommand
             return '';
         }
 
+        // The short class name, e.g., "UserTableForm"
         $formName = $this->argument('name') . 'Form';
+        // The fully qualified class name, e.g., "App\DataTables\Forms\UserTableForm"
         $formClass = $this->qualifyClass($formName, 'Forms');
         $modelClass = $this->qualifyModel($modelName);
 
+        // Replace placeholders in the stub
         $stub = str_replace(['{{ modelName }}', '{{modelName}}'], $modelName, $stub);
         $stub = str_replace(['{{ formClass }}', '{{formClass}}'], $formClass, $stub);
+        $stub = str_replace(['{{ formClassName }}', '{{formClassName}}'], $formName, $stub); // New replacement
         $stub = str_replace(['{{ columns }}', '{{columns}}'], $this->generateColumns($modelClass), $stub);
         $stub = str_replace(['{{ theme }}', '{{theme}}'], $theme, $stub);
 
+        // Call the command to create the associated form
         $this->call('make:datatable-form', [
             'name' => $formName,
             '--model' => $modelName,
@@ -124,7 +129,6 @@ class MakeDatatableCommand extends GeneratorCommand
             return;
         }
 
-        // CORRECTED: Uses modern Livewire 3 namespace and `defaults()` method
         $livewireComponentRoute = "\nRoute::get('/" . $routeName . "', \App\Livewire\DatatablePage::class)"
             . "\n    ->defaults('tableClass', \\" . $tableClass . "::class)"
             . "\n    ->defaults('title', '{$pageTitle}')"
@@ -151,4 +155,3 @@ class MakeDatatableCommand extends GeneratorCommand
         ];
     }
 }
-
