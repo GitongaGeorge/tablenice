@@ -23,7 +23,7 @@ TableNice is a powerful, themeable, and highly configurable datatable and form s
 First, install the package via composer:
 
 ```bash
-composer require mystamyst/tablenice
+composer require mystamyst/tablenice -W
 ```
 
 ### 2. Run the Install Command
